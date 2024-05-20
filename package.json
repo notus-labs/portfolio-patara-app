@@ -1,6 +1,6 @@
 {
-  "name": "portfolio-patara-app",
-  "version": "0.1.0",
+  "name": "patara-frontend",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
