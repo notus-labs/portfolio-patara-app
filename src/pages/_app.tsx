@@ -7,7 +7,6 @@ import Head from "next/head";
 import { ReactNode } from "react";
 
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { fontClassNames } from "@/lib/fonts";
 import { cn } from "@/lib/utils";
@@ -24,7 +23,6 @@ export default function App({
 
   return (
     <>
-      <SpeedInsights />
       <Analytics />
       <Head>
         <title>Patara - All DeFi in One UI</title>
