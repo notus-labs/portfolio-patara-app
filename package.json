@@ -13,6 +13,7 @@
   "dependencies": {
     "@mysten/sui.js": "^0.54.1",
     "@mysten/wallet-standard": "^0.11.6",
+    "@radix-ui/react-dialog": "^1.0.5",
     "@suiet/wallet-kit": "^0.2.24",
     "@suiet/wallet-sdk": "^0.2.21",
     "@typescript-eslint/eslint-plugin": "^7.9.0",
@@ -31,7 +32,6 @@
     "react-dom": "^18",
     "react-responsive": "^10.0.0",
     "recharts": "^2.12.7",
-    "save-dev": "0.0.1-security",
     "sonner": "^1.4.41",
     "swr": "^2.2.5",
     "tailwind-merge": "^2.3.0",

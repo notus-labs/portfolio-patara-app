@@ -3,11 +3,13 @@ import "@suiet/wallet-kit/style.css";
 import "@/lib/abortSignalPolyfill";
 
 import type { AppProps } from "next/app";
+import Head from "next/head";
+import { ReactNode } from "react";
+
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+
 import { fontClassNames } from "@/lib/fonts";
-import { ReactNode } from "react";
-import Head from "next/head";
 import { cn } from "@/lib/utils";
 
 export default function App({
