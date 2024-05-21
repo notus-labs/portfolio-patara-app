@@ -6,9 +6,13 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { ReactNode } from "react";
 
+import { WalletProvider } from "@suiet/wallet-kit";
 import { Analytics } from "@vercel/analytics/react";
+import { GeistSans } from "geist/font/sans";
 
-import { fontClassNames } from "@/lib/fonts";
+import { WalletDialog } from "@/components/dialogs/WalletDialog";
+import Toaster from "@/components/shared/Toaster";
+import { WalletContextProvider } from "@/context/WalletContext";
 import { cn } from "@/lib/utils";
 
 export default function App({
@@ -31,8 +35,15 @@ export default function App({
           content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"
         />
       </Head>
-      <main id="__app_main" className={cn(...fontClassNames)}>
-        {getLayout(<Component {...pageProps} />)}
+      <main id="__app_main" className={cn(GeistSans.className)}>
+        <WalletProvider>
+          <WalletContextProvider>
+            {getLayout(<Component {...pageProps} />)}
+
+            <WalletDialog />
+          </WalletContextProvider>
+        </WalletProvider>
+        <Toaster />
       </main>
     </>
   );

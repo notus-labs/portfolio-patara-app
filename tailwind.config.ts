@@ -5,10 +5,6 @@ const config: Config = {
   content: ["./src/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
-    fontFamily: {
-      sans: ["var(--font-geist-sans)"],
-      mono: ["var(--supply-mono)"],
-    },
     container: {
       center: true,
       padding: "2rem",
@@ -19,7 +15,10 @@ const config: Config = {
     extend: {
       colors: {
         custom: {
+          "gray-600": "#787882",
           "gray-100": "#DCDCE6",
+          "gray-75": "#EBEBF5",
+          "gray-50": "#F5F5FF",
           black: "#0C0C14",
         },
         primary: {

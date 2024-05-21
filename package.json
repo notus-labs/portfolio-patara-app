@@ -11,8 +11,8 @@
     "lint": "bun eslint && bun prettier"
   },
   "dependencies": {
-    "@mysten/sui.js": "^0.54.1",
-    "@mysten/wallet-standard": "^0.11.6",
+    "@mysten/sui.js": "^0.51.2",
+    "@mysten/wallet-standard": "^0.11.2",
     "@radix-ui/react-dialog": "^1.0.5",
     "@suiet/wallet-kit": "^0.2.24",
     "@suiet/wallet-sdk": "^0.2.21",
@@ -31,6 +31,7 @@
     "react-dom": "^18",
     "react-responsive": "^10.0.0",
     "recharts": "^2.12.7",
+    "sass": "^1.77.2",
     "sonner": "^1.4.41",
     "swr": "^2.2.5",
     "tailwind-merge": "^2.3.0",

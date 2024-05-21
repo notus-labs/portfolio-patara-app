@@ -16,7 +16,6 @@ export type Wallet = {
 };
 
 export const useListWallets = () => {
-  // Wallets
   const { configuredWallets, detectedWallets } = useWallet();
 
   const walletKitOverrides = {
@@ -27,6 +26,8 @@ export const useListWallets = () => {
         android:
           "https://play.google.com/store/apps/details?id=com.mystenlabs.suiwallet",
       },
+      logoUrl:
+        "https://play-lh.googleusercontent.com/w2KKtDdJmmTDSSXUD-YM3sAPUe7yMJHLGEOfYMxSIviTVBfMm1n2G3FOG6ys6xiVPkVw=w480-h960-rw",
     },
     Elli: {
       downloadUrls: {
