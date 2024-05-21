@@ -1,9 +1,12 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: ["class"],
-  content: ["./src/**/*.{ts,tsx}"],
-  prefix: "",
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/views/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
   theme: {
     container: {
       center: true,
@@ -15,10 +18,18 @@ const config: Config = {
     extend: {
       colors: {
         custom: {
-          "gray-600": "#787882",
-          "gray-100": "#DCDCE6",
-          "gray-75": "#EBEBF5",
-          "gray-50": "#F5F5FF",
+          "dark-gray": {
+            dropdown: "#3C3C44",
+            idk: "#404048",
+          },
+          gray: {
+            600: "#787882",
+            200: "#C8C8DC",
+            100: "#DCDCE6",
+            75: "#EBEBF5",
+            50: "#F5F5FF",
+          },
+          "dark-blue": "#001229",
           black: "#0C0C14",
         },
         primary: {
@@ -355,6 +366,12 @@ const config: Config = {
           "160px",
           {
             lineHeight: "120px",
+          },
+        ],
+        "2.5xl": [
+          "28px",
+          {
+            lineHeight: "38px",
           },
         ],
       },

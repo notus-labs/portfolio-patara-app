@@ -11,6 +11,7 @@ import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
 
 import { WalletDialog } from "@/components/dialogs/WalletDialog";
+import { Layout } from "@/components/layout/Layout";
 import Toaster from "@/components/shared/Toaster";
 import { WalletContextProvider } from "@/context/WalletContext";
 import { cn } from "@/lib/utils";
@@ -23,7 +24,7 @@ export default function App({
     getLayout?: (page: ReactNode) => ReactNode;
   };
 }) {
-  const getLayout = Component.getLayout ?? ((page) => <>{page}</>);
+  const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
 
   return (
     <>
@@ -38,8 +39,9 @@ export default function App({
       <main id="__app_main" className={cn(GeistSans.className)}>
         <WalletProvider>
           <WalletContextProvider>
-            {getLayout(<Component {...pageProps} />)}
-
+            <div className="bg-custom-gray-200">
+              {getLayout(<Component {...pageProps} />)}
+            </div>
             <WalletDialog />
           </WalletContextProvider>
         </WalletProvider>
