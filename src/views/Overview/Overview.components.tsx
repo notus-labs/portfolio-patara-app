@@ -25,7 +25,7 @@ export const OverviewBadge: FC<OverviewBadgeProps> = ({
   <button
     onClick={onClick}
     className={cn(
-      "rounded-lg bg-custom-gray-50 px-4 py-2 text-base text-custom-black transition-colors duration-500 hover:bg-primary-500 hover:text-custom-gray-50",
+      "rounded-lg bg-custom-gray-50 px-4 py-2 text-sm text-custom-black transition-colors duration-500 hover:bg-primary-500 hover:text-custom-gray-50 lg:text-base",
       active ? "bg-primary-500 text-custom-gray-50" : null,
     )}
   >
