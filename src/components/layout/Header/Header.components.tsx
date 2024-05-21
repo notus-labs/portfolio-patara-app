@@ -24,7 +24,7 @@ export const HeaderProfileButton: FC<HeaderProfileButtonProps> = ({
         <div className="text-sm font-semibold leading-3 text-custom-black">
           {name}
         </div>
-        <div className="text-custom-dark-gray-dropdown text-xs">{address}</div>
+        <div className="text-xs text-custom-dark-gray-dropdown">{address}</div>
       </div>
       <CaretDown className="ml-2 h-6 w-6 text-custom-black" />
     </button>

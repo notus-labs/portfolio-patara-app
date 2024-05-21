@@ -8,7 +8,7 @@ export const OverviewHeaderBadge: FC<OverviewHeaderBadgeProps> = ({
   text,
   percentage,
 }) => (
-  <div className="text-custom-dark-gray-idk rounded-lg bg-custom-gray-100 px-2 py-1 text-xs font-medium">
+  <div className="rounded-lg bg-custom-gray-100 px-2 py-1 text-xs font-medium text-custom-dark-gray-idk">
     <span>{text}</span>
     <span>
       {" "}
