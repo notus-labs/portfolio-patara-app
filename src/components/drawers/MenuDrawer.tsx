@@ -20,11 +20,14 @@ import {
 
 export const MenuDrawer = () => {
   const router = useRouter();
-  const { isSidebarOpen, toggleSidebar } = useAppContext();
+  const { isSidebarOpen, toggleSidebarOff } = useAppContext();
 
   return (
-    <Drawer direction="right" open={isSidebarOpen} onClose={toggleSidebar}>
-      <DrawerContent className="left-auto right-0 h-full w-full max-w-56 rounded-bl-2xl rounded-br-none rounded-tl-2xl rounded-tr-none">
+    <Drawer direction="right" open={isSidebarOpen} onClose={toggleSidebarOff}>
+      <DrawerContent
+        onClose={toggleSidebarOff}
+        className="left-auto h-full w-56 rounded-bl-2xl rounded-br-none rounded-tl-2xl rounded-tr-none"
+      >
         <DrawerHeader>
           <DrawerTitle>
             <PataraIcon className="h-12" />

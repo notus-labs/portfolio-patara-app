@@ -20,7 +20,7 @@ export const Header: FC = () => {
 
   const [{ y }] = useWindowScroll();
   const { lg } = useBreakpoint();
-  const { toggleSidebar } = useAppContext();
+  const { toggleSidebarOn } = useAppContext();
 
   return (
     <header
@@ -62,7 +62,7 @@ export const Header: FC = () => {
               avatarFallback={avatarFallback}
               name={name}
             />
-            <HeaderButton onClick={toggleSidebar}>
+            <HeaderButton onClick={toggleSidebarOn}>
               <List className="h-6 w-6 text-custom-black" />
             </HeaderButton>
           </div>

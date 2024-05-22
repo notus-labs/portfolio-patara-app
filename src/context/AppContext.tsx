@@ -1,22 +1,15 @@
-import {
-  PropsWithChildren,
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import { PropsWithChildren, createContext, useContext, useState } from "react";
 
 type AppContextType = {
   isSidebarOpen: boolean;
-  toggleSidebar: () => void;
+  toggleSidebarOff: () => void;
+  toggleSidebarOn: () => void;
 };
 
 const AppContext = createContext<AppContextType>({
   isSidebarOpen: false,
-  toggleSidebar: () => {
-    throw new Error("AppContextProvider not initialized");
-  },
+  toggleSidebarOff: () => {},
+  toggleSidebarOn: () => {},
 });
 
 export const useAppContext = () => useContext(AppContext);
@@ -24,14 +17,14 @@ export const useAppContext = () => useContext(AppContext);
 export function AppContextProvider({ children }: PropsWithChildren) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  const toggleSidebar = useCallback(() => {
-    setIsSidebarOpen((prev) => !prev);
-  }, []);
+  const toggleSidebarOff = () => setIsSidebarOpen(false);
+  const toggleSidebarOn = () => setIsSidebarOpen(true);
 
-  const value = useMemo(
-    () => ({ isSidebarOpen, toggleSidebar }),
-    [isSidebarOpen, toggleSidebar],
-  );
+  const value = {
+    isSidebarOpen,
+    toggleSidebarOff,
+    toggleSidebarOn,
+  };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
