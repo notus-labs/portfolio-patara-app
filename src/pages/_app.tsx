@@ -11,8 +11,10 @@ import { Analytics } from "@vercel/analytics/react";
 import { GeistSans } from "geist/font/sans";
 
 import { WalletDialog } from "@/components/dialogs/WalletDialog";
+import { MenuDrawer } from "@/components/drawers/MenuDrawer";
 import { Layout } from "@/components/layout/Layout";
 import Toaster from "@/components/shared/Toaster";
+import { AppContextProvider } from "@/context/AppContext";
 import { WalletContextProvider } from "@/context/WalletContext";
 import { cn } from "@/lib/utils";
 
@@ -39,10 +41,13 @@ export default function App({
       <main id="__app_main" className={cn(GeistSans.className)}>
         <WalletProvider>
           <WalletContextProvider>
-            <div className="bg-custom-gray-200">
-              {getLayout(<Component {...pageProps} />)}
-            </div>
-            <WalletDialog />
+            <AppContextProvider>
+              <div className="bg-custom-gray-200">
+                {getLayout(<Component {...pageProps} />)}
+              </div>
+              <WalletDialog />
+              <MenuDrawer />
+            </AppContextProvider>
           </WalletContextProvider>
         </WalletProvider>
         <Toaster />

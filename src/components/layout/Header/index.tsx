@@ -4,6 +4,7 @@ import { Gear, List } from "@phosphor-icons/react";
 import { useWindowScroll } from "@uidotdev/usehooks";
 
 import { PataraIcon } from "@/components/shared/icon";
+import { useAppContext } from "@/context/AppContext";
 import useBreakpoint from "@/hooks/useBreakpoint";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +20,7 @@ export const Header: FC = () => {
 
   const [{ y }] = useWindowScroll();
   const { lg } = useBreakpoint();
+  const { toggleSidebar } = useAppContext();
 
   return (
     <header
@@ -60,7 +62,7 @@ export const Header: FC = () => {
               avatarFallback={avatarFallback}
               name={name}
             />
-            <HeaderButton>
+            <HeaderButton onClick={toggleSidebar}>
               <List className="h-6 w-6 text-custom-black" />
             </HeaderButton>
           </div>

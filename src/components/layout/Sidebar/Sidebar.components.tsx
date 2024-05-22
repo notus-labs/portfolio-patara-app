@@ -10,7 +10,7 @@ export const SidebarBadge: FC<SidebarItem> = ({ icon, text, active, href }) => {
     <Link
       href={href}
       className={cn(
-        "group flex flex-row items-center justify-center gap-4 py-2 text-sm font-medium text-custom-dark-blue transition-colors duration-500 hover:text-primary-500 lg:justify-normal",
+        "group flex flex-row items-center gap-4 py-2 text-sm font-medium text-custom-dark-blue transition-colors duration-500 hover:text-primary-500 md:justify-center lg:justify-normal",
         active ? "text-primary-500" : null,
       )}
     >
@@ -21,7 +21,7 @@ export const SidebarBadge: FC<SidebarItem> = ({ icon, text, active, href }) => {
         ),
         weight: active ? "fill" : "regular",
       })}
-      <div className="hidden lg:block">{text}</div>
+      <div className="md:hidden lg:block">{text}</div>
     </Link>
   );
 };
