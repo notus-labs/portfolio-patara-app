@@ -1,3 +1,7 @@
+import { SignOut } from "@phosphor-icons/react";
+import { Avatar } from "@radix-ui/react-avatar";
+import { useWallet } from "@suiet/wallet-kit";
+
 import {
   Drawer,
   DrawerContent,
@@ -5,16 +9,10 @@ import {
   DrawerHeader,
 } from "@/components/ui/drawer";
 import { useAppContext } from "@/context/AppContext";
-
-import { DiscordIcon, GithubIcon, TwitterIcon } from "../shared/icon";
-
 import { useWalletContext } from "@/context/WalletContext";
 import { formatAddress } from "@/lib/format";
-import { Avatar } from "@radix-ui/react-avatar";
 
 import { AvatarFallback, AvatarImage } from "../ui/avatar";
-import { SignOut } from "@phosphor-icons/react";
-import { useWallet } from "@suiet/wallet-kit";
 
 export const AccountDrawer = () => {
   const { isAccountDrawerOpen, toggleAccountDrawerOff } = useAppContext();
