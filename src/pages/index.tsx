@@ -1,5 +1,8 @@
 import { Overview } from "@/views/Overview";
 
-export default function Page() {
+const Page = () => {
   return <Overview />;
-}
+};
+
+export default Page;
+Page.showMobileHeader = true;

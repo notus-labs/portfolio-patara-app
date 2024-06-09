@@ -3,4 +3,5 @@ export type SidebarItem = {
   icon: React.ReactNode;
   href: string;
   active?: boolean;
+  activated?: boolean;
 };

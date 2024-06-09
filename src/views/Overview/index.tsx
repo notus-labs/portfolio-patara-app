@@ -1,41 +1,15 @@
+import { OverviewContent } from "./content";
+import { useBadges } from "./Overview.hooks";
 import { OverviewBadges, OverviewHeader } from "./Overview.sections";
 
 export const Overview = () => {
+  const { active, handleBadgeClick } = useBadges();
+
   return (
     <div className="relative z-10 flex flex-col">
       <OverviewHeader />
-      <OverviewBadges />
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
-      <h1 className="text-2xl font-semibold text-custom-black">Overview</h1>
+      <OverviewBadges active={active} handleBadgeClick={handleBadgeClick} />
+      <OverviewContent active={active} />
     </div>
   );
 };

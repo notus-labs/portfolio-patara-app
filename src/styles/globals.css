@@ -22,3 +22,68 @@ body {
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
+
+thead {
+  th {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: left;
+    color: #8c8c96;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  border-bottom: 1px solid #c8c8dc;
+}
+
+thead.tr {
+  th {
+    padding-top: 20px;
+  }
+
+  border-bottom: 0px;
+}
+
+tbody {
+  td {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  tr:not(:last-child) {
+    td {
+      border-bottom: 1px solid #c8c8dc;
+    }
+  }
+}
+
+tbody.tr {
+  td {
+    padding-top: 20px;
+  }
+  tr:last-child {
+    td {
+      border-bottom: 1px solid #c8c8dc;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  tbody {
+    td {
+      width: 200px !important;
+    }
+  }
+
+  thead {
+    th {
+      width: 200px !important;
+    }
+  }
+}

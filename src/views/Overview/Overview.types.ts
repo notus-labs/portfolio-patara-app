@@ -8,3 +8,6 @@ export type OverviewBadgeProps = {
   onClick?: () => void;
   active?: boolean;
 };
+
+export type Badges = "Portfolio" | "NFTs";
+export const BADGES: Badges[] = ["Portfolio", "NFTs"];
