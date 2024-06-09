@@ -1,4 +1,5 @@
 import { CoinMetadata, SuiClient } from "@mysten/sui.js/client";
+
 import { extractSymbolFromCoinType } from "@/lib/coinType";
 
 export const getCoinMetadataMap = async (

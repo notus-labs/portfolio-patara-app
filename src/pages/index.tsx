@@ -1,7 +1,8 @@
-export default function Page() {
-  return (
-    <div>
-      <h1>Patara Init</h1>
-    </div>
-  );
-}
+import { Overview } from "@/views/Overview";
+
+const Page = () => {
+  return <Overview />;
+};
+
+export default Page;
+Page.showMobileHeader = true;
