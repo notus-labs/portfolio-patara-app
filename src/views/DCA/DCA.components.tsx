@@ -262,14 +262,20 @@ export const InputWithExtra: React.FC<InputWithExtraProps> = ({
           )}
           {...register(label, {
             onChange: (v: React.ChangeEvent<HTMLInputElement>) => {
-              const value = v.target.value.replace(/[^0-9]/g, "");
+              if (extra) {
+                const value = v.target.value.replace(/[^0-9]/g, "");
 
-              if (label === "every" && value.length > 2) {
-                setValue(label, value.slice(0, 2));
-                return;
+                if (label === "every" && value.length > 2) {
+                  setValue(label, value.slice(0, 2));
+                  return;
+                }
+
+                setValue(label, value);
+              } else {
+                const value = parseInputEventToNumberString(v);
+
+                setValue(label, value);
               }
-
-              setValue(label, value);
             },
           })}
           defaultValue={value}
