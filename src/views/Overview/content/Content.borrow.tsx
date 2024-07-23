@@ -114,7 +114,7 @@ export const OverviewContentBorrowLend = ({
                       : "text-success-500",
                 )}
               >
-                {(healthRatio || 1) * 100}%
+                {((healthRatio || 1) * 100).toFixed(2)}%
               </div>
             </div>
           )}
