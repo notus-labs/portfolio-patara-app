@@ -34,7 +34,9 @@ export const HeaderProfileButton: FC<HeaderProfileButtonProps> = ({
           <div className="flex flex-col items-start">
             <div className="text-xs font-bold">Account</div>
             <div className="text-xs text-custom-dark-gray-dropdown dark:text-gray-600">
-              {address || <Skeleton width={92} />}
+              {address || (
+                <Skeleton className="dark:bg-custom-dark-200" width={92} />
+              )}
             </div>
           </div>
           <CaretDown className="ml-2 h-6 w-6 text-custom-black dark:text-white " />

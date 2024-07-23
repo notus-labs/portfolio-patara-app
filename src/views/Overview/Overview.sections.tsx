@@ -14,7 +14,7 @@ export const OverviewHeader = () => {
         <h3 className="text-sm font-medium lg:text-base">Net Worth</h3>
         <h1 className="text-2xl font-semibold lg:text-2.5xl">
           {isLoading ? (
-            <Skeleton width={200} />
+            <Skeleton className="dark:bg-custom-dark-200" width={200} />
           ) : (
             <>{data?.value?.toFixed(2)} USD</>
           )}

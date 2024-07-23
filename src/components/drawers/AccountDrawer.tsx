@@ -34,9 +34,9 @@ export const AccountDrawer = () => {
       >
         <DrawerHeader>
           <div className="flex flex-row items-center gap-3">
-            <Avatar className="h-[60px] w-[60px] rounded-full border-2 border-primary-50 bg-custom-black dark:border-primary-300 dark:bg-white ">
+            <Avatar className="h-[60px] w-[60px] rounded-full border-2 border-primary-50 bg-custom-black dark:border-primary-300 dark:bg-transparent dark:text-white ">
               <AvatarImage src={avatar} alt={address} />
-              <AvatarFallback className="text-custom-gray-50 dark:text-custom-dark-800 ">
+              <AvatarFallback className="dark:text-custom-dark-white text-custom-gray-50 ">
                 {avatarFallback || "AC"}
               </AvatarFallback>
             </Avatar>
