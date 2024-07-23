@@ -37,8 +37,8 @@ export const PercentageBadge: React.FC<DcaPercentageBadgeProps> = ({
 
     const value =
       text === "100"
-        ? balance.balance.toNumber().toString()
-        : (balance.balance.toNumber() * (parseInt(text) / 100)).toFixed(2);
+        ? balance.balance.toNumber().toFixed(5)
+        : (balance.balance.toNumber() * (parseInt(text) / 100)).toFixed(5);
 
     setValue("sell", value);
 

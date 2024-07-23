@@ -149,12 +149,13 @@ export const DCA = () => {
     };
   }, [coinInRawAmount, coinInType, coinOut, coinOutType, setValue]);
 
-  const insufficientBalance =
-    balance && coinInRawAmount
-      ? new BigNumber(coinInRawAmount).gt(
-          balance.balance.multipliedBy(10 ** (coinIn?.decimals || 9)),
-        )
-      : false;
+  const insufficientBalance = balance
+    ? new BigNumber(coinInRawAmount).gt(
+        balance.balance.multipliedBy(
+          new BigNumber(10).pow(coinIn?.decimals || 9),
+        ),
+      )
+    : true;
 
   return (
     <div className="mt-2 flex h-full w-full items-center justify-center">
