@@ -99,6 +99,12 @@ export const SwapInput: React.FC<SwapInputProps> = ({ type }) => {
 
   const { data: price } = usePrice(coinType);
 
+  const { data: coinInPrice } = usePrice(coinInType);
+  const { data: coinOutPrice } = usePrice(coinOutType);
+
+  const exchangeRate =
+    coinInPrice && coinOutPrice ? coinInPrice / coinOutPrice : undefined;
+
   const priceMultipliedAmount = price ? price * parseFloat(amount) : undefined;
 
   const coinMetadata = coinType
@@ -120,6 +126,11 @@ export const SwapInput: React.FC<SwapInputProps> = ({ type }) => {
         setValue("sell", coinOutAmount);
         setValue("sell_raw", coinOutAmountRaw);
       }
+    }
+
+    if (coinInPrice && exchangeRate) {
+      setValue("minPrice", exchangeRate.toFixed(5));
+      setValue("maxPrice", (exchangeRate * 1.01).toFixed(5));
     }
   };
 

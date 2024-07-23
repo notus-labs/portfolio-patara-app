@@ -93,12 +93,6 @@ export const DCA = () => {
   }
 
   useEffect(() => {
-    // we should set minPrice and maxPrice to the current price
-    if (coinInPrice && exchangeRate) {
-      setValue("minPrice", exchangeRate.toFixed(5));
-      setValue("maxPrice", (exchangeRate * 1.01).toFixed(5));
-    }
-
     // if the coinInAmount is 0, we should set the buy amount to 0
     if (
       !coinInAmount ||
