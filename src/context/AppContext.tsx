@@ -1,13 +1,8 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
-import {
-  CoinBalance,
-  CoinMetadata,
-  SuiClient,
-  getFullnodeUrl,
-} from "@mysten/sui.js/client";
-import { normalizeStructTag } from "@mysten/sui.js/utils";
-import { useSuiProvider } from "@suiet/wallet-kit";
+import { CoinBalance, CoinMetadata, SuiClient } from "@mysten/sui/client";
+import { normalizeStructTag } from "@mysten/sui/utils";
+import { useSuiClient } from "@suiet/wallet-kit";
 import { useQuery } from "@tanstack/react-query";
 
 import {
@@ -57,7 +52,7 @@ export function AppContextProvider({ children }: PropsWithChildren) {
   const toggleAccountDrawerOff = () => setIsAccountDrawerOpen(false);
   const toggleAccountDrawerOn = () => setIsAccountDrawerOpen(true);
 
-  const client = useSuiProvider(getFullnodeUrl("mainnet"));
+  const client = useSuiClient();
   const { address } = useWalletContext();
 
   const { data } = useQuery({
@@ -85,12 +80,18 @@ async function fetchCoinBalances(
   client: SuiClient,
   address?: string,
 ): Promise<{
+  uniqueCoinTypes: string[];
   coinBalancesMap: Record<string, ParsedCoinBalance>;
   coinMetadataMap: Record<string, CoinMetadata>;
   coinBalancesRaw: CoinBalance[];
 }> {
   if (!address)
-    return { coinBalancesMap: {}, coinMetadataMap: {}, coinBalancesRaw: [] };
+    return {
+      uniqueCoinTypes: [],
+      coinBalancesMap: {},
+      coinMetadataMap: {},
+      coinBalancesRaw: [],
+    };
 
   const coinBalancesRaw = (
     await client.getAllBalances({
@@ -99,7 +100,17 @@ async function fetchCoinBalances(
   ).map((cb) => ({ ...cb, coinType: normalizeStructTag(cb.coinType) }));
 
   const coinStructs = await getAllCoins(client, address);
-  const uniqueCoinTypes = new Set(coinStructs.map((coin) => coin.coinType));
+  const uniqueCoinTypes = new Set(
+    coinStructs.map((coin) => normalizeStructTag(coin.coinType)),
+  );
+
+  uniqueCoinTypes.add(
+    "0xc060006111016b8a020ad5b33834984a437aaa7d3c74c18e09a95d48aceab08c::coin::COIN",
+  );
+  uniqueCoinTypes.add(
+    "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
+  );
+
   const metadataMap = await getCoinMetadataMap(
     client,
     Array.from(uniqueCoinTypes),
@@ -112,6 +123,7 @@ async function fetchCoinBalances(
   );
 
   return {
+    uniqueCoinTypes: Array.from(uniqueCoinTypes),
     coinBalancesMap,
     coinMetadataMap: metadataMap,
     coinBalancesRaw,

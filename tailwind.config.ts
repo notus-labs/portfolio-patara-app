@@ -24,10 +24,13 @@ const config: Config = {
           },
           gray: {
             600: "#787882",
+            300: "#B4B4BE",
             200: "#C8C8DC",
+            150: "#D2D2E1",
             100: "#DCDCE6",
             75: "#EBEBF5",
             50: "#F5F5FF",
+            25: "#FAFAFF",
           },
           "dark-blue": "#001229",
           black: "#0C0C14",
