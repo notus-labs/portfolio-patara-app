@@ -3,6 +3,9 @@ import { FC } from "react";
 
 import { Gear, List } from "@phosphor-icons/react";
 import { useWindowScroll } from "@uidotdev/usehooks";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { toast } from "sonner";
 
 import { PataraIcon } from "@/components/shared/icon";
 import { useAppContext } from "@/context/AppContext";
@@ -30,30 +33,54 @@ export const Header: FC<{
   const [{ y }] = useWindowScroll();
   const { md, lg } = useBreakpoint();
   const { toggleSidebarOn } = useAppContext();
+  const { setTheme } = useTheme();
 
   return (
     <header
       className={cn(
-        "sticky left-0 top-0 z-50 h-20 bg-custom-gray-200 lg:h-24",
+        "sticky left-0 top-0 z-50 h-20 bg-custom-gray-200 dark:bg-custom-dark-900  lg:h-24",
         y && y > 96 && y <= 150 && "lg:rounded-b-2xl",
-        !md && y && y > 1 && "border-b border-custom-gray-100",
+        !md &&
+          y &&
+          y > 1 &&
+          "border-b border-custom-gray-100 dark:border-custom-dark-500 ",
       )}
     >
       {md ? (
         <div
           className={cn(
-            "absolute top-2 flex w-full flex-row items-center justify-between rounded-t-2xl bg-custom-gray-50 p-3 lg:p-5",
+            "absolute top-2 flex w-full flex-row items-center justify-between rounded-t-2xl bg-custom-gray-50 p-3  dark:bg-custom-dark-800 lg:p-5",
             y && y > 96 && "rounded-b-2xl",
             roundedFully && "rounded-b-2xl",
             md && !lg && "rounded-b-2xl",
           )}
         >
-          <h2 className="text-2xl font-semibold text-custom-black">
+          <h2 className="text-2xl font-semibold text-custom-black dark:text-white ">
             {location}
           </h2>
           <div className="flex flex-row gap-2">
-            <HeaderButton>
-              <Gear className="h-6 w-6 text-custom-black" />
+            <HeaderButton
+              onClick={() => {
+                toast.info("Settings are not available yet.");
+              }}
+            >
+              <Gear className="h-6 w-6 text-custom-black dark:text-white " />
+            </HeaderButton>
+            <HeaderButton
+              className="hidden dark:block"
+              onClick={() => {
+                setTheme("light");
+              }}
+            >
+              <Sun className="h-6 w-6 text-custom-black dark:text-white" />
+            </HeaderButton>
+            <HeaderButton
+              onClick={() => {
+                setTheme("dark");
+              }}
+              className="dark:hidden"
+            >
+              <Moon className="h-6 w-6 text-custom-black dark:text-white" />
             </HeaderButton>
             <HeaderProfileButton
               address={formattedAddress}
@@ -72,7 +99,7 @@ export const Header: FC<{
               avatarFallback={avatarFallback}
             />
             <HeaderButton onClick={toggleSidebarOn}>
-              <List className="h-6 w-6 text-custom-black" />
+              <List className="h-6 w-6 text-custom-black dark:text-white " />
             </HeaderButton>
           </div>
         </div>
@@ -92,10 +119,10 @@ export const MobileHeader: FC<{
       {!lg && show && (
         <div
           className={cn(
-            "flex w-full flex-row items-center justify-between rounded-t-2xl bg-custom-gray-50 p-5 pb-0",
+            "flex w-full flex-row items-center justify-between rounded-t-2xl bg-custom-gray-50 p-5  pb-0 dark:bg-custom-dark-800",
           )}
         >
-          <h2 className="text-2xl font-semibold text-custom-black">
+          <h2 className="text-2xl font-semibold text-custom-black dark:text-white ">
             {location}
           </h2>
         </div>

@@ -153,7 +153,7 @@ export const DCA = () => {
 
   return (
     <div className="mt-2 flex h-full w-full items-center justify-center">
-      <div className="w-full max-w-[480px] rounded-lg bg-custom-gray-50 p-4">
+      <div className="w-full max-w-[480px] rounded-lg bg-custom-gray-50 p-4  dark:bg-custom-dark-800">
         <div className="flex flex-row items-center justify-between">
           <div className="text-sm font-semibold">
             {balance && coinIn ? (
@@ -182,8 +182,8 @@ export const DCA = () => {
               extra={
                 <DropdownMenu>
                   <DropdownMenuTrigger>
-                    <button className="flex h-full max-h-[38px] flex-row items-center gap-2 rounded-lg border border-custom-gray-100 bg-custom-gray-50 px-3 py-2 font-semibold">
-                      <span className="text-sm text-custom-black">
+                    <button className="flex h-full max-h-[38px] flex-row items-center gap-2 rounded-lg border border-custom-gray-100 bg-custom-gray-50 px-3  py-2  font-semibold dark:border-custom-dark-500 dark:bg-custom-dark-800">
+                      <span className="text-sm text-custom-black dark:text-white ">
                         {
                           {
                             1: "Minute",
@@ -193,14 +193,14 @@ export const DCA = () => {
                           }[timeScale]
                         }
                       </span>
-                      <CaretDown className="h-5 w-5 text-custom-black" />
+                      <CaretDown className="h-5 w-5 text-custom-black dark:text-white " />
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="flex max-w-32 flex-col gap-1">
                     <DropdownMenuItem
                       className={cn(
-                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75",
-                        "hover:bg-custom-gray-25 hover:text-custom-black",
+                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
+                        "hover:bg-custom-gray-25 hover:text-custom-black dark:text-white ",
                       )}
                       onClick={() => setValue("time_scale", 1)}
                     >
@@ -208,8 +208,8 @@ export const DCA = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className={cn(
-                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75",
-                        "hover:bg-custom-gray-25 hover:text-custom-black",
+                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
+                        "hover:bg-custom-gray-25 hover:text-custom-black dark:text-white ",
                       )}
                       onClick={() => setValue("time_scale", 2)}
                     >
@@ -217,8 +217,8 @@ export const DCA = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className={cn(
-                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75",
-                        "hover:bg-custom-gray-25 hover:text-custom-black",
+                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
+                        "hover:bg-custom-gray-25 hover:text-custom-black dark:text-white ",
                       )}
                       onClick={() => setValue("time_scale", 3)}
                     >
@@ -226,8 +226,8 @@ export const DCA = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className={cn(
-                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75",
-                        "hover:bg-custom-gray-25 hover:text-custom-black",
+                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
+                        "hover:bg-custom-gray-25 hover:text-custom-black dark:text-white ",
                       )}
                       onClick={() => setValue("time_scale", 4)}
                     >
@@ -241,8 +241,10 @@ export const DCA = () => {
             />
             <InputWithExtra
               extra={
-                <div className="flex h-full max-h-[38px] flex-row items-center gap-1 rounded-lg border border-custom-gray-100 bg-custom-gray-50 px-3 py-2 font-semibold">
-                  <span className="text-sm text-custom-black">Orders</span>
+                <div className="flex h-full max-h-[38px] flex-row items-center gap-1 rounded-lg border border-custom-gray-100 bg-custom-gray-50 px-3  py-2  font-semibold dark:border-custom-dark-500 dark:bg-custom-dark-800">
+                  <span className="text-sm text-custom-black dark:text-white ">
+                    Orders
+                  </span>
                 </div>
               }
               text="Over"
@@ -256,7 +258,7 @@ export const DCA = () => {
           <AnimatePresence>
             {coinIn && coinOut && exchangeRate && (
               <motion.div
-                className="flex flex-row items-center justify-between rounded-lg border border-custom-gray-100 p-2 px-4"
+                className="flex flex-row items-center justify-between rounded-lg border border-custom-gray-100 p-2  px-4 dark:border-custom-dark-500"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -264,7 +266,7 @@ export const DCA = () => {
                 <div className="text-sm font-medium text-custom-gray-600">
                   Current {coinIn.symbol}/{coinOut.symbol} rate
                 </div>
-                <div className="text-right text-xs text-custom-black">
+                <div className="text-right text-xs text-custom-black dark:text-white ">
                   ${exchangeRate.toFixed(5)} {coinIn.symbol}/{coinOut.symbol}
                 </div>
               </motion.div>
@@ -275,6 +277,9 @@ export const DCA = () => {
             className={cn(
               "w-full rounded-lg bg-primary-50 py-5 text-center text-base font-semibold text-primary-500 transition-colors duration-300 hover:bg-primary-100/70",
               "disabled:cursor-not-allowed disabled:bg-opacity-50 disabled:hover:bg-primary-50/50",
+              "dark:disabled:bg-custom-dark-600 dark:disabled:text-custom-gray-600",
+              "dark:bg-primary-300 dark:text-white",
+              "dark:text-white dark:hover:bg-primary-500",
             )}
             disabled={
               loading ||

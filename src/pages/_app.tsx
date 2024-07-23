@@ -17,6 +17,7 @@ import { WalletDialog } from "@/components/dialogs/WalletDialog";
 import { AccountDrawer } from "@/components/drawers/AccountDrawer";
 import { MenuDrawer } from "@/components/drawers/MenuDrawer";
 import { Layout } from "@/components/layout/Layout";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import Toaster from "@/components/shared/Toaster";
 import { AppContextProvider } from "@/context/AppContext";
 import { WalletContextProvider } from "@/context/WalletContext";
@@ -58,21 +59,28 @@ export default function App({
         />
       </Head>
       <main id="__app_main" className={cn(inter.className)}>
-        <QueryClientProvider client={queryClient}>
-          <WalletProvider>
-            <WalletContextProvider>
-              <AppContextProvider>
-                <div className="bg-custom-gray-200">
-                  {getLayout(<Component {...pageProps} />)}
-                </div>
-                <WalletDialog />
-                <MenuDrawer />
-                <AccountDrawer />
-              </AppContextProvider>
-            </WalletContextProvider>
-          </WalletProvider>
-          <Toaster />
-        </QueryClientProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <QueryClientProvider client={queryClient}>
+            <WalletProvider>
+              <WalletContextProvider>
+                <AppContextProvider>
+                  <div className="bg-custom-gray-200 text-custom-black dark:bg-custom-dark-900 dark:text-white">
+                    {getLayout(<Component {...pageProps} />)}
+                  </div>
+                  <WalletDialog />
+                  <MenuDrawer />
+                  <AccountDrawer />
+                </AppContextProvider>
+              </WalletContextProvider>
+            </WalletProvider>
+            <Toaster />
+          </QueryClientProvider>
+        </ThemeProvider>
       </main>
     </>
   );

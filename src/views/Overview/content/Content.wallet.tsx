@@ -17,15 +17,17 @@ export const OverviewContentWallet = ({
   tokenInfo: Record<string, TokenInfo>;
 }) => {
   return (
-    <div className="flex w-full flex-col gap-5 rounded-xl bg-custom-gray-50 py-3">
-      <div className="mx-3 flex flex-row items-center justify-between rounded-lg bg-custom-gray-100 px-5 py-3">
+    <div className="flex w-full flex-col gap-5 rounded-xl bg-custom-gray-50 py-3  dark:bg-custom-dark-800">
+      <div className="mx-3 flex flex-row items-center justify-between rounded-lg bg-custom-gray-100 px-5  py-3 dark:bg-custom-dark-700">
         <div className="flex flex-row items-center gap-2">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-custom-gray-50">
-            <Wallet className="text-custom-black" size={24} />
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-custom-gray-50 dark:bg-custom-dark-800 ">
+            <Wallet className="text-custom-black dark:text-white " size={24} />
           </div>
-          <h3 className="text-xl font-semibold text-custom-black">Wallet</h3>
+          <h3 className="text-xl font-semibold text-custom-black dark:text-white ">
+            Wallet
+          </h3>
         </div>
-        <h3 className="text-xl font-semibold text-custom-black">
+        <h3 className="text-xl font-semibold text-custom-black dark:text-white ">
           ${wallet.value?.toFixed(2)}
         </h3>
       </div>
@@ -73,7 +75,7 @@ const WalletTokenTable = ({
                         src={tokenInfoData.logoURI}
                         alt={tokenInfoData.name}
                       />
-                      <AvatarFallback className="border border-black text-custom-black">
+                      <AvatarFallback className="border border-black text-custom-black dark:text-white ">
                         {tokenInfoData.name.slice(0, 2).toUpperCase()}
                       </AvatarFallback>
                     </Avatar>

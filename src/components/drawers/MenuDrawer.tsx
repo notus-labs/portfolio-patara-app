@@ -15,6 +15,7 @@ import {
   DiscordIcon,
   GithubIcon,
   PataraIcon,
+  PataraWhiteIcon,
   TwitterIcon,
 } from "../shared/icon";
 
@@ -30,7 +31,8 @@ export const MenuDrawer = () => {
       >
         <DrawerHeader>
           <DrawerTitle>
-            <PataraIcon className="h-12" />
+            <PataraIcon className="h-12 dark:hidden" />
+            <PataraWhiteIcon className="hidden h-12 dark:block" />
           </DrawerTitle>
         </DrawerHeader>
         <div className="flex flex-col gap-1 pl-5">
@@ -43,15 +45,15 @@ export const MenuDrawer = () => {
           ))}
         </div>
         <DrawerFooter className="pl-5">
-          <div className="flex flex-row items-start justify-normal gap-6 fill-custom-dark-blue">
+          <div className="flex flex-row items-start justify-normal gap-6 fill-custom-dark-blue dark:fill-white">
             <a href="https://discord.gg/zHtXawHn6r" target="_blank">
-              <DiscordIcon className="h-6 w-6" />
+              <DiscordIcon className="h-6 w-6 dark:text-white" />
             </a>
             <a href="https://github.com/notus-labs" target="_blank">
-              <GithubIcon className="h-6 w-6" />
+              <GithubIcon className="h-6 w-6 dark:text-white" />
             </a>
             <a href="https://x.com/PataraApp" target="_blank">
-              <TwitterIcon className="h-6 w-6" />
+              <TwitterIcon className="h-6 w-6 dark:text-white" />
             </a>
           </div>
         </DrawerFooter>

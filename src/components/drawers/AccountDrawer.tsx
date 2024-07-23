@@ -34,14 +34,14 @@ export const AccountDrawer = () => {
       >
         <DrawerHeader>
           <div className="flex flex-row items-center gap-3">
-            <Avatar className="h-[60px] w-[60px] rounded-full border-2 border-primary-500 bg-custom-black">
+            <Avatar className="h-[60px] w-[60px] rounded-full border-2 border-primary-50 bg-custom-black dark:border-primary-300 dark:bg-white ">
               <AvatarImage src={avatar} alt={address} />
-              <AvatarFallback className="text-custom-gray-50">
+              <AvatarFallback className="text-custom-gray-50 dark:text-custom-dark-800 ">
                 {avatarFallback || "AC"}
               </AvatarFallback>
             </Avatar>
             <div>
-              <div className="text-lg font-semibold text-custom-black">
+              <div className="text-lg font-semibold text-custom-black dark:text-white ">
                 Account
               </div>
               <div className="text-sm font-normal text-custom-gray-600">
@@ -58,12 +58,12 @@ export const AccountDrawer = () => {
                 toggleAccountDrawerOff();
               });
             }}
-            className="flex w-full items-center gap-2 rounded-lg border border-custom-gray-100 px-5 py-2"
+            className="flex w-full items-center gap-2 rounded-lg border border-custom-gray-100 px-5  py-2 dark:border-custom-dark-500"
           >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-custom-black text-white">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-custom-black text-white dark:bg-white  dark:text-custom-black">
               <SignOut className="m-auto h-5 w-5" />
             </div>
-            <div className="text-sm font-semibold text-custom-black">
+            <div className="text-sm font-semibold text-custom-black dark:text-white ">
               Logout
             </div>
           </button>

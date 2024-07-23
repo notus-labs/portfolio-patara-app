@@ -102,8 +102,12 @@ export function TokenSelectionDialog<
           <Separator />
           <div className="flex flex-col gap-4 px-6 py-4">
             <div className="flex items-center justify-between px-3">
-              <div className="text-base font-medium text-gray-600">Token</div>
-              <div className="text-base font-medium text-gray-600">Balance</div>
+              <div className="text-base font-medium text-gray-600 dark:text-custom-dark-200">
+                Token
+              </div>
+              <div className="text-base font-medium text-gray-600 dark:text-custom-dark-200">
+                Balance
+              </div>
             </div>
             <ScrollArea
               style={{
@@ -139,11 +143,11 @@ export const SearchInput = forwardRef<
 >((props, ref) => {
   return (
     <div className="relative">
-      <MagnifyingGlass className="absolute left-3 top-2.5 h-6 w-6 text-light-gray-900" />
+      <MagnifyingGlass className="absolute left-3 top-2.5 h-6 w-6 text-light-gray-900 dark:text-custom-gray-600" />
       <input
         ref={ref}
         className={cn(
-          "h-11 w-full rounded-full border border-custom-gray-100 px-3 py-2 pl-12 text-sm text-gray-900 placeholder-custom-dark-gray-idk",
+          "h-11 w-full rounded-full border border-custom-gray-100 px-3 py-2 pl-12 text-sm text-gray-900 placeholder-custom-dark-gray-idk dark:border-custom-dark-500 dark:bg-transparent dark:text-custom-gray-600",
           // remove ring and border when focused
           "focus:outline-none focus:ring-0",
         )}
@@ -193,9 +197,11 @@ export const PrioTokenButton: FC<{
       <button
         onClick={onClick}
         className={cn(
-          "flex flex-row items-center justify-between gap-2 rounded-full border border-custom-gray-100 bg-custom-gray-75 p-2 pr-4 transition-colors duration-300",
+          "flex flex-row items-center justify-between gap-2 rounded-full border border-custom-gray-100 bg-custom-gray-75 p-2 pr-4 transition-colors duration-300 dark:text-white",
           "hover:bg-custom-gray-100",
           selected && "bg-custom-gray-100 hover:bg-custom-gray-150",
+          "dark:border-custom-dark-400 dark:bg-custom-dark-600 hover:dark:bg-custom-dark-400",
+          selected && "dark:bg-custom-dark-700 hover:dark:bg-custom-dark-500",
         )}
       >
         <Avatar className="h-8 w-8">
@@ -208,7 +214,7 @@ export const PrioTokenButton: FC<{
           </AvatarFallback>
         </Avatar>
         <div className="flex flex-col">
-          <div className="text-sm font-medium text-custom-black ">
+          <div className="text-sm font-medium text-custom-black dark:text-white">
             {token.metadata?.symbol}
           </div>
         </div>
@@ -238,6 +244,8 @@ export const TokenButton: FC<{
           "flex flex-row items-center justify-between gap-2 rounded-lg bg-custom-gray-75 px-5 py-3 transition-colors duration-300",
           "hover:bg-custom-gray-100",
           selected && "bg-custom-gray-100 hover:bg-custom-gray-150",
+          "dark:bg-custom-dark-600 hover:dark:bg-custom-dark-400",
+          selected && "dark:bg-custom-dark-700 hover:dark:bg-custom-dark-500",
         )}
       >
         <div className="flex flex-row items-center gap-2">
@@ -252,21 +260,19 @@ export const TokenButton: FC<{
               {token.metadata?.symbol?.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
-          <div className="flex flex-col items-start justify-center text-start">
-            <div className="text-sm font-medium text-custom-black">
-              {token.metadata?.symbol}
-            </div>
+          <div className="flex flex-col items-start justify-center text-start text-custom-black dark:text-white">
+            <div className="text-sm font-medium">{token.metadata?.symbol}</div>
             <div className="text-xs font-normal">{token.metadata?.name}</div>
           </div>
         </div>
         <div className="flex flex-row items-center gap-2">
           <div className="flex flex-col items-end">
-            <div className="text-sm font-medium text-custom-black">
+            <div className="text-sm font-medium text-custom-black dark:text-white">
               {token.balance
                 ? token.balance.balance.toNumber().toFixed(4)
                 : "0"}
             </div>
-            <div className="text-xs font-normal text-custom-gray-600">
+            <div className="text-xs font-normal text-custom-gray-600 dark:text-custom-dark-200">
               $
               {price && token.balance
                 ? token.balance.balance.times(price).toNumber().toFixed(2)

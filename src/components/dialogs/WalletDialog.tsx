@@ -55,7 +55,7 @@ export const WalletDialog = () => {
               Patara&apos;s{" "}
               <a
                 href="https://patara.app"
-                className="text-primary-500"
+                className="text-primary-500 dark:text-primary-300"
                 target="_blank"
                 referrerPolicy="no-referrer"
               >
@@ -65,7 +65,7 @@ export const WalletDialog = () => {
             </div>
             <a
               href="https://patara.app"
-              className="text-primary-500"
+              className="text-primary-500 dark:text-primary-300"
               target="_blank"
               referrerPolicy="no-referrer"
             >
@@ -113,7 +113,7 @@ const WalletItem = ({ wallet }: { wallet: Wallet }) => {
   return (
     <button
       onClick={onClick}
-      className="flex items-center justify-between gap-2 rounded-lg bg-custom-gray-75 px-5 py-3 text-sm text-custom-black transition-all duration-500 hover:bg-custom-gray-100"
+      className="flex items-center justify-between gap-2 rounded-lg bg-custom-gray-75 px-5  py-3 text-sm text-custom-black transition-all duration-500  hover:bg-custom-gray-100 dark:bg-custom-dark-600 dark:text-white  hover:dark:bg-custom-dark-400"
     >
       <div className="flex flex-row items-center gap-2">
         <Image
@@ -125,7 +125,7 @@ const WalletItem = ({ wallet }: { wallet: Wallet }) => {
         />
         {wallet.name}
       </div>
-      <div className="text-xs font-medium text-primary-500 transition-all duration-500 hover:text-primary-600">
+      <div className="text-xs font-medium text-primary-500 transition-all duration-500 hover:text-primary-600 dark:text-primary-300">
         {wallet.isInstalled ? "Installed" : "Install"}
       </div>
     </button>

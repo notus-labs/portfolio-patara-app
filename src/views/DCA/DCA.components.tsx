@@ -48,7 +48,7 @@ export const PercentageBadge: React.FC<DcaPercentageBadgeProps> = ({
   return (
     <button
       onClick={onClick}
-      className="flex items-center justify-center rounded-lg border border-custom-gray-75 p-1 text-center text-xs text-custom-black"
+      className="flex items-center justify-center rounded-lg border border-custom-gray-75 p-1  text-center text-xs text-custom-black dark:border-custom-dark-600 dark:text-white "
     >
       {text}%
     </button>
@@ -135,7 +135,7 @@ export const SwapInput: React.FC<SwapInputProps> = ({ type }) => {
   };
 
   return (
-    <div className="flex flex-col gap-1 rounded-lg bg-custom-gray-75 p-4 py-3">
+    <div className="flex flex-col gap-1 rounded-lg bg-custom-gray-75 p-4  py-3 dark:bg-custom-dark-600">
       <div className="text-right text-sm font-medium text-custom-gray-600">
         {type === "sell" ? "Sell" : "Buy"}
       </div>
@@ -143,7 +143,7 @@ export const SwapInput: React.FC<SwapInputProps> = ({ type }) => {
         <TokenSelectionDialog
           control={control}
           trigger={
-            <button className="flex flex-row items-center gap-2 rounded-full border border-custom-gray-100 bg-custom-gray-50 p-2">
+            <button className="flex flex-row items-center gap-2 rounded-full border border-custom-gray-100 bg-custom-gray-50 p-2  dark:border-custom-dark-500  dark:bg-custom-dark-800">
               {coinMetadata ? (
                 <div className="flex flex-row items-center gap-2">
                   <Avatar>
@@ -153,20 +153,20 @@ export const SwapInput: React.FC<SwapInputProps> = ({ type }) => {
                       width={24}
                       height={24}
                     />
-                    <AvatarFallback className="bg-dark-gray-500 text-custom-gray-50">
+                    <AvatarFallback className="bg-dark-gray-500 text-custom-gray-50 dark:text-custom-dark-800 ">
                       {coinMetadata.symbol.slice(0, 2)}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="text-base font-semibold text-custom-black">
+                  <div className="text-base font-semibold text-custom-black dark:text-white ">
                     {coinMetadata.symbol}
                   </div>
                 </div>
               ) : (
-                <div className="text-base font-semibold text-custom-black">
+                <div className="text-base font-semibold text-custom-black dark:text-white ">
                   Select
                 </div>
               )}
-              <CaretDown className="h-5 w-5 text-custom-black" />
+              <CaretDown className="h-5 w-5 text-custom-black dark:text-white " />
             </button>
           }
           usage={type === "sell" ? "in" : "out"}
@@ -174,7 +174,7 @@ export const SwapInput: React.FC<SwapInputProps> = ({ type }) => {
         />
         <input
           className={cn(
-            "w-1/2 rounded-lg bg-transparent p-2 pr-0 text-right text-2xl text-custom-black placeholder:text-custom-gray-600 focus:outline-none focus:ring-0",
+            "w-1/2 rounded-lg bg-transparent p-2 pr-0 text-right text-2xl text-custom-black placeholder:text-custom-gray-600  focus:outline-none focus:ring-0 dark:text-white",
             loading && type === "buy" ? "opacity-50" : null,
           )}
           placeholder="0"
@@ -199,7 +199,7 @@ export const SwapInput: React.FC<SwapInputProps> = ({ type }) => {
           })}
         />
       </div>
-      <div className="text-right text-sm text-custom-black">
+      <div className="text-right text-sm text-custom-black dark:text-white ">
         {priceMultipliedAmount && !isNaN(priceMultipliedAmount) ? (
           <>${priceMultipliedAmount.toFixed(2)}</>
         ) : (
@@ -242,9 +242,9 @@ export const SwapInputs: React.FC = () => {
           setValue("sell", coinOutAmount);
           setValue("sell_raw", coinOutAmountRaw);
         }}
-        className="absolute flex h-12 w-12 items-center justify-center rounded-full border-[3px] border-custom-gray-50 bg-custom-gray-100"
+        className="absolute flex h-12 w-12 items-center justify-center rounded-full border-[3px] border-custom-gray-50 bg-custom-gray-100 dark:border-custom-dark-800  dark:bg-custom-dark-500 "
       >
-        <ArrowDown className="h-6 w-6 text-custom-black" />
+        <ArrowDown className="h-6 w-6 text-custom-black dark:text-white " />
       </button>
     </div>
   );
@@ -262,12 +262,12 @@ export const InputWithExtra: React.FC<InputWithExtraProps> = ({
   });
 
   return (
-    <div className="flex flex-col gap-2 rounded-lg bg-custom-gray-75 p-4 py-3">
+    <div className="flex flex-col gap-2 rounded-lg bg-custom-gray-75 p-4  py-3 dark:bg-custom-dark-600">
       <div className="text-sm font-medium text-custom-gray-600">{text}</div>
       <div className="flex flex-row items-center justify-between">
         <input
           className={cn(
-            "rounded-lg bg-transparent p-2 pl-0 text-2xl text-custom-black placeholder:text-custom-gray-600 focus:outline-none focus:ring-0",
+            "rounded-lg bg-transparent p-2 pl-0 text-2xl text-custom-black placeholder:text-custom-gray-600  focus:outline-none focus:ring-0 dark:text-white",
             extra ? "w-1/4" : "w-full",
             label === "over" ? "w-3/4" : null,
           )}
