@@ -195,7 +195,7 @@ export const PrioTokenButton: FC<{
         className={cn(
           "flex flex-row items-center justify-between gap-2 rounded-full border border-custom-gray-100 bg-custom-gray-75 p-2 pr-4 transition-colors duration-300",
           "hover:bg-custom-gray-100",
-          selected && "bg-custom-gray-100 hover:bg-custom-gray-150",
+          selected && "hover:bg-custom-gray-150 bg-custom-gray-100",
         )}
       >
         <Avatar className="h-8 w-8">
@@ -237,7 +237,7 @@ export const TokenButton: FC<{
         className={cn(
           "flex flex-row items-center justify-between gap-2 rounded-lg bg-custom-gray-75 px-5 py-3 transition-colors duration-300",
           "hover:bg-custom-gray-100",
-          selected && "bg-custom-gray-100 hover:bg-custom-gray-150",
+          selected && "hover:bg-custom-gray-150 bg-custom-gray-100",
         )}
       >
         <div className="flex flex-row items-center gap-2">
@@ -262,12 +262,15 @@ export const TokenButton: FC<{
         <div className="flex flex-row items-center gap-2">
           <div className="flex flex-col items-end">
             <div className="text-sm font-medium text-custom-black">
-              {token.balance?.balance.toNumber().toFixed(4)}
+              {token.balance
+                ? token.balance.balance.toNumber().toFixed(4)
+                : "0"}
             </div>
             <div className="text-xs font-normal text-custom-gray-600">
               $
-              {price &&
-                token.balance?.balance.times(price).toNumber().toFixed(2)}
+              {price && token.balance
+                ? token.balance.balance.times(price).toNumber().toFixed(2)
+                : "0"}
             </div>
           </div>
         </div>
