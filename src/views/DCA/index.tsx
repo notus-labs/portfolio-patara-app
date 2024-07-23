@@ -2,6 +2,7 @@ import { useEffect } from "react";
 
 import { CaretDown } from "@phosphor-icons/react";
 import BigNumber from "bignumber.js";
+import { AnimatePresence, motion } from "framer-motion";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import {
@@ -148,6 +149,13 @@ export const DCA = () => {
     };
   }, [coinInRawAmount, coinInType, coinOut, coinOutType, setValue]);
 
+  const insufficientBalance =
+    balance && coinInRawAmount
+      ? new BigNumber(coinInRawAmount).gt(
+          balance.balance.multipliedBy(10 ** (coinIn?.decimals || 9)),
+        )
+      : false;
+
   return (
     <div className="mt-2 flex h-full w-full items-center justify-center">
       <div className="w-full max-w-[480px] rounded-lg bg-custom-gray-50 p-4">
@@ -252,21 +260,28 @@ export const DCA = () => {
             <InputWithExtra label="minPrice" text="Min price" />
             <InputWithExtra label="maxPrice" text="Max price" />
           </div>
-          {coinIn && coinOut && exchangeRate && (
-            <div className="flex flex-row items-center justify-between rounded-lg border border-custom-gray-100 p-2 px-4">
-              <div className="text-sm font-medium text-custom-gray-600">
-                Current {coinIn.symbol}/{coinOut.symbol} rate
-              </div>
-              <div className="text-right text-xs text-custom-black">
-                ${exchangeRate.toFixed(5)} {coinIn.symbol}/{coinOut.symbol}
-              </div>
-            </div>
-          )}
+          <AnimatePresence>
+            {coinIn && coinOut && exchangeRate && (
+              <motion.div
+                className="flex flex-row items-center justify-between rounded-lg border border-custom-gray-100 p-2 px-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <div className="text-sm font-medium text-custom-gray-600">
+                  Current {coinIn.symbol}/{coinOut.symbol} rate
+                </div>
+                <div className="text-right text-xs text-custom-black">
+                  ${exchangeRate.toFixed(5)} {coinIn.symbol}/{coinOut.symbol}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
           <button
             type="submit"
             className={cn(
               "w-full rounded-lg bg-primary-50 py-5 text-center text-base font-semibold text-primary-500 transition-colors duration-300 hover:bg-primary-100/70",
-              "disabled:cursor-not-allowed disabled:bg-opacity-50 disabled:hover:bg-primary-50",
+              "disabled:cursor-not-allowed disabled:bg-opacity-50 disabled:hover:bg-primary-50/50",
             )}
             disabled={
               loading ||
@@ -277,10 +292,15 @@ export const DCA = () => {
               parseInt(every) === 0 ||
               isNaN(parseInt(every)) ||
               parseInt(over) === 0 ||
-              isNaN(parseInt(over))
+              isNaN(parseInt(over)) ||
+              insufficientBalance
             }
           >
-            Start DCA
+            {insufficientBalance
+              ? "Insufficient balance"
+              : loading
+                ? "Loading..."
+                : "Start DCA"}
           </button>
         </div>
       </div>
