@@ -200,7 +200,7 @@ export const DCA = () => {
                     <DropdownMenuItem
                       className={cn(
                         "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
-                        "hover:bg-custom-gray-25 hover:text-custom-black dark:text-white ",
+                        "hover:bg-custom-dark-600 hover:bg-custom-gray-25 hover:text-custom-black hover:dark:text-white",
                       )}
                       onClick={() => setValue("time_scale", 1)}
                     >
@@ -209,7 +209,7 @@ export const DCA = () => {
                     <DropdownMenuItem
                       className={cn(
                         "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
-                        "hover:bg-custom-gray-25 hover:text-custom-black dark:text-white ",
+                        "hover:bg-custom-dark-600 hover:bg-custom-gray-25 hover:text-custom-black hover:dark:text-white",
                       )}
                       onClick={() => setValue("time_scale", 2)}
                     >
@@ -218,7 +218,7 @@ export const DCA = () => {
                     <DropdownMenuItem
                       className={cn(
                         "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
-                        "hover:bg-custom-gray-25 hover:text-custom-black dark:text-white ",
+                        "hover:bg-custom-dark-600 hover:bg-custom-gray-25 hover:text-custom-black hover:dark:text-white",
                       )}
                       onClick={() => setValue("time_scale", 3)}
                     >
@@ -227,7 +227,7 @@ export const DCA = () => {
                     <DropdownMenuItem
                       className={cn(
                         "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
-                        "hover:bg-custom-gray-25 hover:text-custom-black dark:text-white ",
+                        "hover:bg-custom-dark-600 hover:bg-custom-gray-25 hover:text-custom-black hover:dark:text-white",
                       )}
                       onClick={() => setValue("time_scale", 4)}
                     >
