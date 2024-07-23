@@ -11,6 +11,7 @@ import {
   parseCoinBalances,
 } from "@/lib/coinBalance";
 import { getCoinMetadataMap } from "@/lib/coinMetadata";
+import { NORMALIZED_SUI_COINTYPE } from "@/lib/coinType";
 
 import { useWalletContext } from "./WalletContext";
 
@@ -104,9 +105,12 @@ async function fetchCoinBalances(
     coinStructs.map((coin) => normalizeStructTag(coin.coinType)),
   );
 
+  uniqueCoinTypes.add(NORMALIZED_SUI_COINTYPE);
+
   uniqueCoinTypes.add(
     "0xc060006111016b8a020ad5b33834984a437aaa7d3c74c18e09a95d48aceab08c::coin::COIN",
   );
+
   uniqueCoinTypes.add(
     "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
   );
