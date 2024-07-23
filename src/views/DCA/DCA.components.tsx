@@ -253,7 +253,7 @@ export const InputWithExtra: React.FC<InputWithExtraProps> = ({
   return (
     <div className="flex flex-col gap-2 rounded-lg bg-custom-gray-75 p-4 py-3">
       <div className="text-sm font-medium text-custom-gray-600">{text}</div>
-      <div className="flex flex-row justify-between">
+      <div className="flex flex-row items-center justify-between">
         <input
           className={cn(
             "rounded-lg bg-transparent p-2 pl-0 text-2xl text-custom-black placeholder:text-custom-gray-600 focus:outline-none focus:ring-0",

@@ -188,7 +188,7 @@ export const DCA = () => {
               extra={
                 <DropdownMenu>
                   <DropdownMenuTrigger>
-                    <button className="flex flex-row items-center gap-2 rounded-lg border border-custom-gray-100 bg-custom-gray-50 px-3 py-2 font-semibold">
+                    <button className="flex h-full max-h-[38px] flex-row items-center gap-2 rounded-lg border border-custom-gray-100 bg-custom-gray-50 px-3 py-2 font-semibold">
                       <span className="text-sm text-custom-black">
                         {
                           {
@@ -247,10 +247,8 @@ export const DCA = () => {
             />
             <InputWithExtra
               extra={
-                <div>
-                  <div className="flex flex-row items-center gap-1 rounded-lg border border-custom-gray-100 bg-custom-gray-50 px-3 py-2 font-semibold">
-                    <span className="text-sm text-custom-black">Orders</span>
-                  </div>
+                <div className="flex h-full max-h-[38px] flex-row items-center gap-1 rounded-lg border border-custom-gray-100 bg-custom-gray-50 px-3 py-2 font-semibold">
+                  <span className="text-sm text-custom-black">Orders</span>
                 </div>
               }
               text="Over"
