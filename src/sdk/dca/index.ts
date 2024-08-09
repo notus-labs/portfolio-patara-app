@@ -14,12 +14,12 @@ import { DEEP_BOOK_CLIENT } from "./client";
 export async function newDCA(
   provider: SuiClient,
   address: string,
-  coin_in: number,
+  coin_in: bigint,
   every: number,
   number_of_orders: number,
   time_scale: number,
-  min: number,
-  max: number,
+  min: bigint,
+  max: bigint,
   coin_in_type: string,
   coin_out_type: string,
 ): Promise<Transaction> {

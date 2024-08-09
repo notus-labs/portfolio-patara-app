@@ -35,6 +35,7 @@ export default function App({
     getLayout?: (page: ReactNode) => ReactNode;
     roundedFully?: boolean;
     showMobileHeader?: boolean;
+    heightFull?: boolean;
   };
 }) {
   const getLayout =
@@ -43,6 +44,7 @@ export default function App({
       <Layout
         roundedFully={Component.roundedFully}
         showMobileHeader={Component.showMobileHeader}
+        heightFull={Component.heightFull}
       >
         {page}
       </Layout>
@@ -69,7 +71,11 @@ export default function App({
             <WalletProvider>
               <WalletContextProvider>
                 <AppContextProvider>
-                  <div className="bg-custom-gray-200 text-custom-black dark:bg-custom-dark-900 dark:text-white">
+                  <div
+                    className={cn(
+                      "bg-custom-gray-200 text-custom-black dark:bg-custom-dark-900 dark:text-white",
+                    )}
+                  >
                     {getLayout(<Component {...pageProps} />)}
                   </div>
                   <WalletDialog />

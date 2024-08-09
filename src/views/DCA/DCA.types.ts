@@ -43,7 +43,28 @@ export const DCASchema = z.object({
   maxPrice: z.string({
     message: "Invalid amount",
   }),
+  advancedPriceStrategy: z.boolean(),
   buy_loading: z.boolean(),
+  history_open: z.boolean(),
+  history_stage: z.union([z.literal("Active"), z.literal("Past")]),
 });
 
 export type DCASchemaType = z.infer<typeof DCASchema>;
+
+export type HistoryBadgeProps = {
+  text: string;
+  onClick?: () => void;
+  active?: boolean;
+};
+
+export type HistoryRowProps = {
+  sell: {
+    name: string;
+    image: string;
+  };
+  buy: {
+    name: string;
+    image: string;
+  };
+  amount: string;
+};

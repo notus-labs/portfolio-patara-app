@@ -3,10 +3,14 @@ import { useEffect, useState } from "react";
 
 import BigNumber from "bignumber.js";
 import { useFormContext, useWatch } from "react-hook-form";
+import { toast } from "sonner";
+import invariant from "ts-invariant";
 
 import { useAppContext } from "@/context/AppContext";
+import { useWalletContext } from "@/context/WalletContext";
 import { usePrice } from "@/hooks/usePrice";
 import { updateURL } from "@/lib/url";
+import { newDCA } from "@/sdk/dca";
 import { AF_CLIENT } from "@/sdk/utils/client";
 
 import { DCASchemaType } from "./DCA.types";
@@ -55,7 +59,14 @@ export function useChangeUrl() {
 
 export function useDCAContext() {
   const { control, setValue } = useFormContext<DCASchemaType>();
-  const { coinBalancesMap, coinMetadataMap } = useAppContext();
+  const {
+    coinBalancesMap,
+    coinMetadataMap,
+    client,
+    signExecuteAndWaitTransactionBlock,
+    refetchCoinBalances,
+  } = useAppContext();
+  const { address } = useWalletContext();
   const router = useAfRouter();
 
   const coinInType = useWatch({
@@ -86,6 +97,26 @@ export function useDCAContext() {
   const over = useWatch({
     control,
     name: `over`,
+  });
+
+  const minPrice = useWatch({
+    control,
+    name: `minPrice`,
+  });
+
+  const maxPrice = useWatch({
+    control,
+    name: `maxPrice`,
+  });
+
+  const timeScale = useWatch({
+    control,
+    name: `time_scale`,
+  });
+
+  const advancedPriceStrategyOpen = useWatch({
+    control,
+    name: "advancedPriceStrategy",
   });
 
   const loading = useWatch({
@@ -176,6 +207,52 @@ export function useDCAContext() {
     isNaN(parseInt(over)) ||
     insufficientBalance;
 
+  async function onSubmit() {
+    toast.promise(
+      async () => {
+        if (disableTrade) return;
+
+        invariant(address, "Address is required");
+        invariant(exchangeRate, "Exchange rate is required");
+
+        const tx = await newDCA(
+          client,
+          address,
+          BigInt(coinInRawAmount.toString()),
+          +every,
+          +over,
+          timeScale,
+          !advancedPriceStrategyOpen
+            ? BigInt(
+                BigNumber(minPrice)
+                  .multipliedBy(BigNumber(10 ** coinOut.decimals))
+                  .toString(),
+              )
+            : BigInt(0),
+          !advancedPriceStrategyOpen
+            ? BigInt(
+                BigNumber(maxPrice)
+                  .multipliedBy(BigNumber(10 ** coinOut.decimals))
+                  .toString(),
+              )
+            : BigInt("18446744073709551615"),
+          coinInType,
+          coinOutType,
+        );
+
+        await signExecuteAndWaitTransactionBlock(tx);
+      },
+      {
+        loading: "Creating DCA",
+        success: "DCA created",
+        error: (error) => `Error: ${error.message}`,
+        finally: () => {
+          refetchCoinBalances();
+        },
+      },
+    );
+  }
+
   return {
     coinInType,
     coinOutType,
@@ -185,5 +262,6 @@ export function useDCAContext() {
     balance,
     insufficientBalance,
     disableTrade,
+    onSubmit,
   };
 }

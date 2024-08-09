@@ -1,6 +1,12 @@
 import { PropsWithChildren, createContext, useContext, useState } from "react";
 
-import { CoinBalance, CoinMetadata, SuiClient } from "@mysten/sui/client";
+import {
+  CoinBalance,
+  CoinMetadata,
+  SuiClient,
+  SuiTransactionBlockResponse,
+} from "@mysten/sui/client";
+import { Transaction } from "@mysten/sui/transactions";
 import { normalizeStructTag } from "@mysten/sui/utils";
 import { useSuiClient } from "@suiet/wallet-kit";
 import { useQuery } from "@tanstack/react-query";
@@ -17,6 +23,7 @@ import { useWalletContext } from "./WalletContext";
 
 type AppContextType = {
   isSidebarOpen: boolean;
+  refetchCoinBalances: () => void;
   toggleSidebarOff: () => void;
   toggleSidebarOn: () => void;
   isAccountDrawerOpen: boolean;
@@ -26,10 +33,14 @@ type AppContextType = {
   coinBalancesMap: Record<string, ParsedCoinBalance>;
   coinMetadataMap: Record<string, CoinMetadata>;
   coinBalancesRaw: CoinBalance[];
+  signExecuteAndWaitTransactionBlock: (
+    txb: Transaction,
+  ) => Promise<SuiTransactionBlockResponse>;
 };
 
 const AppContext = createContext<AppContextType>({
   isSidebarOpen: false,
+  refetchCoinBalances: () => {},
   toggleSidebarOff: () => {},
   toggleSidebarOn: () => {},
   isAccountDrawerOpen: false,
@@ -39,6 +50,8 @@ const AppContext = createContext<AppContextType>({
   coinBalancesMap: {},
   coinMetadataMap: {},
   coinBalancesRaw: [],
+  signExecuteAndWaitTransactionBlock: async () =>
+    ({}) as SuiTransactionBlockResponse,
 });
 
 export const useAppContext = () => useContext(AppContext);
@@ -54,9 +67,9 @@ export function AppContextProvider({ children }: PropsWithChildren) {
   const toggleAccountDrawerOn = () => setIsAccountDrawerOpen(true);
 
   const client = useSuiClient();
-  const { address } = useWalletContext();
+  const { address, signExecuteAndWaitTransactionBlock } = useWalletContext();
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["suiCoinBalances", address],
     queryFn: () => fetchCoinBalances(client, address),
   });
@@ -65,6 +78,7 @@ export function AppContextProvider({ children }: PropsWithChildren) {
     isSidebarOpen,
     toggleSidebarOff,
     toggleSidebarOn,
+    refetchCoinBalances: refetch,
     isAccountDrawerOpen,
     toggleAccountDrawerOff,
     toggleAccountDrawerOn,
@@ -72,6 +86,8 @@ export function AppContextProvider({ children }: PropsWithChildren) {
     coinBalancesMap: data?.coinBalancesMap ?? {},
     coinMetadataMap: data?.coinMetadataMap ?? {},
     coinBalancesRaw: data?.coinBalancesRaw ?? [],
+    signExecuteAndWaitTransactionBlock: (txb: Transaction) =>
+      signExecuteAndWaitTransactionBlock(client, txb),
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
