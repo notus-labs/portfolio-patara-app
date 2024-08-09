@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import { z } from "zod";
 
 export type DcaPercentageBadgeProps = {
@@ -20,11 +21,11 @@ export const DCASchema = z.object({
   sell: z.string({
     message: "Invalid amount",
   }),
-  sell_raw: z.string(),
+  sell_raw: z.instanceof(BigNumber).optional(),
   buy: z.string({
     message: "Invalid amount",
   }),
-  buy_raw: z.string(),
+  buy_raw: z.instanceof(BigNumber).optional(),
   time_scale: z.number().min(0).max(5),
   every: z
     .string({

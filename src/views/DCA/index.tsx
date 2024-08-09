@@ -1,7 +1,4 @@
-import { useEffect } from "react";
-
 import { CaretDown } from "@phosphor-icons/react";
-import BigNumber from "bignumber.js";
 import { AnimatePresence, motion } from "framer-motion";
 import { useFormContext, useWatch } from "react-hook-form";
 
@@ -11,10 +8,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useAppContext } from "@/context/AppContext";
-import { usePrice } from "@/hooks/usePrice";
 import { cn } from "@/lib/utils";
-import { AF_CLIENT } from "@/sdk/utils/client";
 
 import {
   InputWithExtra,
@@ -22,134 +16,30 @@ import {
   SwapInput,
   SwapInputs,
 } from "./DCA.components";
-import { useChangeUrl } from "./DCA.hooks";
+import { useChangeUrl, useDCAContext } from "./DCA.hooks";
 import { DCASchemaType } from "./DCA.types";
-
-export const useAfRouter = () => AF_CLIENT.Router();
 
 export const DCA = () => {
   const { control, setValue } = useFormContext<DCASchemaType>();
-  const { coinBalancesMap, coinMetadataMap } = useAppContext();
-  const router = useAfRouter();
+  const {
+    coinIn,
+    coinOut,
+    exchangeRate,
+    balance,
+    insufficientBalance,
+    disableTrade,
+  } = useDCAContext();
   useChangeUrl();
-
-  const coinInAmount = useWatch({
-    control,
-    name: `sell`,
-  });
-
-  const coinInRawAmount = useWatch({
-    control,
-    name: `sell_raw`,
-  });
-
-  const coinInType = useWatch({
-    control,
-    name: `token_in`,
-  });
-
-  const { data: coinInPrice } = usePrice(coinInType);
-
-  const coinOutType = useWatch({
-    control,
-    name: `token_out`,
-  });
 
   const loading = useWatch({
     control,
     name: `buy_loading`,
   });
 
-  const every = useWatch({
-    control,
-    name: `every`,
-  });
-
-  const over = useWatch({
-    control,
-    name: `over`,
-  });
-
   const timeScale = useWatch({
     control,
     name: `time_scale`,
   });
-
-  const { data: coinOutPrice } = usePrice(coinOutType);
-
-  const coinIn = coinInType ? coinMetadataMap[coinInType] : undefined;
-  const coinOut = coinOutType ? coinMetadataMap[coinOutType] : undefined;
-  const exchangeRate =
-    coinInPrice && coinOutPrice ? coinInPrice / coinOutPrice : undefined;
-
-  const balance = coinInType ? coinBalancesMap[coinInType] : undefined;
-
-  function afterDotItsTrailingZeros(value: string) {
-    const dotIndex = value.indexOf(".");
-    return value
-      .slice(dotIndex + 1)
-      .split("")
-      .every((char) => char === "0");
-  }
-
-  useEffect(() => {
-    // if the coinInAmount is 0, we should set the buy amount to 0
-    if (
-      !coinInAmount ||
-      coinInAmount === "0" ||
-      coinInAmount === "0." ||
-      afterDotItsTrailingZeros(coinInAmount)
-    ) {
-      setValue("buy", "0");
-      setValue("buy_raw", "0");
-      return;
-    }
-  }, [coinInAmount, coinInPrice, exchangeRate, setValue]);
-
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    // we should set the buy amount to the current price
-    if (coinOut && coinInRawAmount && coinInRawAmount !== "NaN") {
-      setValue("buy_loading", true);
-
-      router
-        .getCompleteTradeRouteGivenAmountIn(
-          {
-            coinInType: coinInType,
-            coinInAmount: BigInt(coinInRawAmount),
-            coinOutType: coinOutType,
-          },
-          abortController.signal,
-        )
-        .then((route) => {
-          setValue(
-            "buy",
-            new BigNumber(route.coinOut.amount.toString())
-              .div(new BigNumber(10).pow(coinOut.decimals))
-              .toFixed(4),
-          );
-          setValue("buy_raw", route.coinOut.amount.toString());
-          setValue("buy_loading", false);
-        })
-        .catch(() => {
-          setValue("buy_loading", false);
-        });
-    }
-
-    return () => {
-      abortController.abort();
-      setValue("buy_loading", false);
-    };
-  }, [coinInRawAmount, coinInType, coinOut, coinOutType, setValue]);
-
-  const insufficientBalance = balance
-    ? new BigNumber(coinInRawAmount).gt(
-        balance.balance.multipliedBy(
-          new BigNumber(10).pow(coinIn?.decimals || 9),
-        ),
-      )
-    : true;
 
   return (
     <div className="mt-2 flex h-full w-full items-center justify-center">
@@ -197,42 +87,25 @@ export const DCA = () => {
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="flex max-w-32 flex-col gap-1">
-                    <DropdownMenuItem
-                      className={cn(
-                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
-                        "hover:bg-custom-dark-600 hover:bg-custom-gray-25 hover:text-custom-black hover:dark:text-white",
-                      )}
-                      onClick={() => setValue("time_scale", 1)}
-                    >
-                      Minute
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className={cn(
-                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
-                        "hover:bg-custom-dark-600 hover:bg-custom-gray-25 hover:text-custom-black hover:dark:text-white",
-                      )}
-                      onClick={() => setValue("time_scale", 2)}
-                    >
-                      Hour
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className={cn(
-                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
-                        "hover:bg-custom-dark-600 hover:bg-custom-gray-25 hover:text-custom-black hover:dark:text-white",
-                      )}
-                      onClick={() => setValue("time_scale", 3)}
-                    >
-                      Day
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className={cn(
-                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
-                        "hover:bg-custom-dark-600 hover:bg-custom-gray-25 hover:text-custom-black hover:dark:text-white",
-                      )}
-                      onClick={() => setValue("time_scale", 4)}
-                    >
-                      Week
-                    </DropdownMenuItem>
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <DropdownMenuItem
+                        key={i}
+                        className={cn(
+                          "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
+                          "hover:bg-custom-gray-25 hover:text-custom-black dark:hover:bg-custom-dark-400 hover:dark:text-white",
+                        )}
+                        onClick={() => setValue("time_scale", i + 1)}
+                      >
+                        {
+                          {
+                            1: "Minute",
+                            2: "Hour",
+                            3: "Day",
+                            4: "Week",
+                          }[i + 1]
+                        }
+                      </DropdownMenuItem>
+                    ))}
                   </DropdownMenuContent>
                 </DropdownMenu>
               }
@@ -281,18 +154,7 @@ export const DCA = () => {
               "dark:bg-primary-300 dark:text-white",
               "dark:text-white dark:hover:bg-primary-500",
             )}
-            disabled={
-              loading ||
-              !coinIn ||
-              !coinOut ||
-              parseInt(coinInRawAmount) === 0 ||
-              isNaN(parseInt(coinInRawAmount)) ||
-              parseInt(every) === 0 ||
-              isNaN(parseInt(every)) ||
-              parseInt(over) === 0 ||
-              isNaN(parseInt(over)) ||
-              insufficientBalance
-            }
+            disabled={disableTrade}
           >
             {insufficientBalance
               ? "Insufficient balance"

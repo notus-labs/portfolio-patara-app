@@ -1,12 +1,15 @@
 import React from "react";
 
+import { normalizeStructTag } from "@mysten/sui/utils";
 import { ArrowDown, CaretDown } from "@phosphor-icons/react";
+import BigNumber from "bignumber.js";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { TokenSelectionDialog } from "@/components/token/TokenSelectionDialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAppContext } from "@/context/AppContext";
 import { usePrice } from "@/hooks/usePrice";
+import { NORMALIZED_SUI_COINTYPE } from "@/lib/coinType";
 import { getTokenInfoFromMetadata } from "@/lib/getTokenInfo";
 import { parseIntoRaw } from "@/lib/raw";
 import { parseInputEventToNumberString } from "@/lib/string";
@@ -37,12 +40,14 @@ export const PercentageBadge: React.FC<DcaPercentageBadgeProps> = ({
 
     const value =
       text === "100"
-        ? balance.balance.toNumber().toFixed(5)
-        : (balance.balance.toNumber() * (parseInt(text) / 100)).toFixed(5);
+        ? normalizeStructTag(balance.coinType) === NORMALIZED_SUI_COINTYPE
+          ? balance.balance.minus(new BigNumber(0.1).multipliedBy(1))
+          : balance.balance
+        : balance.balance.multipliedBy(new BigNumber(text).div(100));
 
-    setValue("sell", value);
+    setValue("sell", value.toString());
 
-    setValue("sell_raw", parseIntoRaw(value, balance.mintDecimals));
+    setValue("sell_raw", value.multipliedBy(10 ** balance.mintDecimals));
   }
 
   return (
