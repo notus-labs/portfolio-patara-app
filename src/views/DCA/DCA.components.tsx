@@ -114,10 +114,10 @@ export const DCAForm = () => {
                     <span className="text-sm text-custom-black dark:text-white ">
                       {
                         {
-                          1: "Minute",
-                          2: "Hour",
-                          3: "Day",
-                          4: "Week",
+                          0: "Minute",
+                          1: "Hour",
+                          2: "Day",
+                          3: "Week",
                         }[timeScale]
                       }
                     </span>
@@ -132,15 +132,15 @@ export const DCAForm = () => {
                         "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
                         "hover:bg-custom-gray-25 hover:text-custom-black dark:hover:bg-custom-dark-400 hover:dark:text-white",
                       )}
-                      onClick={() => setValue("time_scale", i + 1)}
+                      onClick={() => setValue("time_scale", i)}
                     >
                       {
                         {
-                          1: "Minute",
-                          2: "Hour",
-                          3: "Day",
-                          4: "Week",
-                        }[i + 1]
+                          0: "Minute",
+                          1: "Hour",
+                          2: "Day",
+                          3: "Week",
+                        }[i]
                       }
                     </DropdownMenuItem>
                   ))}

@@ -10,8 +10,9 @@ import { useAppContext } from "@/context/AppContext";
 import { useWalletContext } from "@/context/WalletContext";
 import { usePrice } from "@/hooks/usePrice";
 import { updateURL } from "@/lib/url";
-import { newDCA } from "@/sdk/dca";
 import { AF_CLIENT } from "@/sdk/utils/client";
+
+import { newDCA } from "@/sdk";
 
 import { DCASchemaType } from "./DCA.types";
 import { afterDotItsTrailingZeros } from "./DCA.utils";
@@ -222,22 +223,22 @@ export function useDCAContext() {
           +every,
           +over,
           timeScale,
+          coinInType,
+          coinOutType,
           !advancedPriceStrategyOpen
             ? BigInt(
                 BigNumber(minPrice)
                   .multipliedBy(BigNumber(10 ** coinOut.decimals))
                   .toString(),
               )
-            : BigInt(0),
+            : undefined,
           !advancedPriceStrategyOpen
             ? BigInt(
                 BigNumber(maxPrice)
                   .multipliedBy(BigNumber(10 ** coinOut.decimals))
                   .toString(),
               )
-            : BigInt("18446744073709551615"),
-          coinInType,
-          coinOutType,
+            : undefined,
         );
 
         await signExecuteAndWaitTransactionBlock(tx);

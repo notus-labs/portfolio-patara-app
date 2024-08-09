@@ -16,7 +16,7 @@ const Page = () => {
     defaultValues: {
       sell: "0",
       every: "30",
-      time_scale: 1,
+      time_scale: 0,
       over: "2",
       minPrice: "0",
       maxPrice: "0",
