@@ -225,14 +225,14 @@ export function useDCAContext() {
           timeScale,
           coinInType,
           coinOutType,
-          !advancedPriceStrategyOpen
+          advancedPriceStrategyOpen
             ? BigInt(
                 BigNumber(minPrice)
                   .multipliedBy(BigNumber(10 ** coinOut.decimals))
                   .toString(),
               )
             : undefined,
-          !advancedPriceStrategyOpen
+          advancedPriceStrategyOpen
             ? BigInt(
                 BigNumber(maxPrice)
                   .multipliedBy(BigNumber(10 ** coinOut.decimals))

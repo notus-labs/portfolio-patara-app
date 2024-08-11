@@ -251,10 +251,12 @@ const PercentageBadge: React.FC<DcaPercentageBadgeProps> = ({ text }) => {
           ? balance.balance.minus(new BigNumber(0.1).multipliedBy(1))
           : balance.balance
         : balance.balance.multipliedBy(new BigNumber(text).div(100));
-
     setValue("sell", value.toString());
 
-    setValue("sell_raw", value.multipliedBy(10 ** balance.mintDecimals));
+    setValue(
+      "sell_raw",
+      value.multipliedBy(10 ** balance.mintDecimals).integerValue(),
+    );
   }
 
   return (
