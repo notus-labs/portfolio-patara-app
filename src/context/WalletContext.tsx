@@ -178,10 +178,10 @@ export function WalletContextProvider({ children }: PropsWithChildren) {
 
         setAccountAddress(_address);
         toast.info(
-          `Switched to ${_account?.label ? _account.label : addressNameServiceName ?? _address}`,
+          `Switched to ${_account?.label ? _account.label : (addressNameServiceName ?? _address)}`,
           {
             description: _account?.label
-              ? addressNameServiceName ?? _address
+              ? (addressNameServiceName ?? _address)
               : undefined,
           },
         );

@@ -4,10 +4,11 @@ import {
   CoinBalance,
   CoinMetadata,
   SuiClient,
-  getFullnodeUrl,
+  SuiTransactionBlockResponse,
 } from "@mysten/sui.js/client";
+import { TransactionBlock } from "@mysten/sui.js/transactions";
 import { normalizeStructTag } from "@mysten/sui.js/utils";
-import { useSuiProvider } from "@suiet/wallet-kit";
+import { useSuiClient } from "@suiet/wallet-kit";
 import { useQuery } from "@tanstack/react-query";
 
 import {
@@ -30,6 +31,9 @@ type AppContextType = {
   coinBalancesMap: Record<string, ParsedCoinBalance>;
   coinMetadataMap: Record<string, CoinMetadata>;
   coinBalancesRaw: CoinBalance[];
+  signExecuteAndWaitTransactionBlock: (
+    txb: TransactionBlock,
+  ) => Promise<SuiTransactionBlockResponse>;
 };
 
 const AppContext = createContext<AppContextType>({
@@ -43,6 +47,8 @@ const AppContext = createContext<AppContextType>({
   coinBalancesMap: {},
   coinMetadataMap: {},
   coinBalancesRaw: [],
+  signExecuteAndWaitTransactionBlock: async () =>
+    ({}) as SuiTransactionBlockResponse,
 });
 
 export const useAppContext = () => useContext(AppContext);
@@ -57,8 +63,8 @@ export function AppContextProvider({ children }: PropsWithChildren) {
   const toggleAccountDrawerOff = () => setIsAccountDrawerOpen(false);
   const toggleAccountDrawerOn = () => setIsAccountDrawerOpen(true);
 
-  const client = useSuiProvider(getFullnodeUrl("mainnet"));
-  const { address } = useWalletContext();
+  const client = useSuiClient();
+  const { address, signExecuteAndWaitTransactionBlock } = useWalletContext();
 
   const { data } = useQuery({
     queryKey: ["suiCoinBalances", address],
@@ -76,6 +82,8 @@ export function AppContextProvider({ children }: PropsWithChildren) {
     coinBalancesMap: data?.coinBalancesMap ?? {},
     coinMetadataMap: data?.coinMetadataMap ?? {},
     coinBalancesRaw: data?.coinBalancesRaw ?? [],
+    signExecuteAndWaitTransactionBlock: (txb: TransactionBlock) =>
+      signExecuteAndWaitTransactionBlock(client, txb),
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
