@@ -1,9 +1,8 @@
-import { CoinStruct, SuiClient } from "@mysten/sui.js/client";
+import { CoinStruct, SuiClient, getFullnodeUrl } from "@mysten/sui.js/client";
 import {
   TransactionBlock,
   TransactionObjectArgument,
 } from "@mysten/sui.js/transactions";
-import { useSuiClient } from "@suiet/wallet-kit";
 import { useQuery } from "@tanstack/react-query";
 import invariant from "ts-invariant";
 
@@ -11,7 +10,9 @@ import { useWalletContext } from "@/context/WalletContext";
 
 export function useBalance(type: string) {
   const { address } = useWalletContext();
-  const { client } = useSuiClient();
+  const client = new SuiClient({
+    url: getFullnodeUrl("mainnet"),
+  });
 
   const {
     data: balance,

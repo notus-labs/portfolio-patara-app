@@ -5,10 +5,10 @@ import {
   CoinMetadata,
   SuiClient,
   SuiTransactionBlockResponse,
+  getFullnodeUrl,
 } from "@mysten/sui.js/client";
 import { TransactionBlock } from "@mysten/sui.js/transactions";
 import { normalizeStructTag } from "@mysten/sui.js/utils";
-import { useSuiClient } from "@suiet/wallet-kit";
 import { useQuery } from "@tanstack/react-query";
 
 import {
@@ -63,7 +63,9 @@ export function AppContextProvider({ children }: PropsWithChildren) {
   const toggleAccountDrawerOff = () => setIsAccountDrawerOpen(false);
   const toggleAccountDrawerOn = () => setIsAccountDrawerOpen(true);
 
-  const client = useSuiClient();
+  const client = new SuiClient({
+    url: getFullnodeUrl("mainnet"),
+  });
   const { address, signExecuteAndWaitTransactionBlock } = useWalletContext();
 
   const { data } = useQuery({
