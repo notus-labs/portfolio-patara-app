@@ -1,11 +1,11 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 
 import { normalizeStructTag } from "@mysten/sui/utils";
 import {
   ArrowDown,
   ArrowRight,
+  ArrowSquareIn,
   CaretDown,
-  CaretRight,
   Pulse,
   X,
 } from "@phosphor-icons/react";
@@ -14,6 +14,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useFormContext, useWatch } from "react-hook-form";
 
 import { TokenSelectionDialog } from "@/components/token/TokenSelectionDialog";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -21,7 +27,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { useAppContext } from "@/context/AppContext";
@@ -32,6 +37,8 @@ import { getTokenInfoFromMetadata } from "@/lib/getTokenInfo";
 import { parseIntoRaw } from "@/lib/raw";
 import { parseInputEventToNumberString } from "@/lib/string";
 import { cn } from "@/lib/utils";
+
+import { DCAObject, useDCA } from "@/sdk";
 
 import { useChangeUrl, useDCAContext } from "./DCA.hooks";
 import {
@@ -114,10 +121,10 @@ export const DCAForm = () => {
                     <span className="text-sm text-custom-black dark:text-white ">
                       {
                         {
-                          0: "Minute",
-                          1: "Hour",
-                          2: "Day",
-                          3: "Week",
+                          1: "Minute",
+                          2: "Hour",
+                          3: "Day",
+                          4: "Week",
                         }[timeScale]
                       }
                     </span>
@@ -125,24 +132,28 @@ export const DCAForm = () => {
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="flex max-w-32 flex-col gap-1">
-                  {Array.from({ length: 4 }).map((_, i) => (
-                    <DropdownMenuItem
-                      key={i}
-                      className={cn(
-                        "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
-                        "hover:bg-custom-gray-25 hover:text-custom-black dark:hover:bg-custom-dark-400 hover:dark:text-white",
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <>
+                      {i !== 0 && (
+                        <DropdownMenuItem
+                          key={i}
+                          className={cn(
+                            "flex cursor-pointer items-center justify-center rounded-[4px] bg-custom-gray-75 dark:bg-custom-dark-600 ",
+                            "hover:bg-custom-gray-25 hover:text-custom-black dark:hover:bg-custom-dark-400 hover:dark:text-white",
+                          )}
+                          onClick={() => setValue("time_scale", i)}
+                        >
+                          {
+                            {
+                              1: "Minute",
+                              2: "Hour",
+                              3: "Day",
+                              4: "Week",
+                            }[i]
+                          }
+                        </DropdownMenuItem>
                       )}
-                      onClick={() => setValue("time_scale", i)}
-                    >
-                      {
-                        {
-                          0: "Minute",
-                          1: "Hour",
-                          2: "Day",
-                          3: "Week",
-                        }[i]
-                      }
-                    </DropdownMenuItem>
+                    </>
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -413,7 +424,7 @@ const SwapInput: React.FC<SwapInputProps> = ({ type }) => {
           })}
         />
       </div>
-      <div className="text-right text-sm text-custom-black dark:text-white ">
+      <div className="text-right text-sm font-semibold text-custom-black dark:text-white ">
         {priceMultipliedAmount && !isNaN(priceMultipliedAmount) ? (
           <>${priceMultipliedAmount.toFixed(2)}</>
         ) : (
@@ -545,10 +556,12 @@ const HistoryComponent: React.FC = () => {
     name: "history_stage",
   });
 
+  const { data: dcas } = useDCA();
+
   return (
     <div
       className={cn(
-        "flex h-full w-full max-w-full flex-col rounded-lg bg-custom-gray-50 p-4 dark:bg-custom-dark-800",
+        "flex h-full w-full max-w-full flex-col rounded-lg bg-custom-gray-50 p-2 dark:bg-custom-dark-800 lg:p-4",
       )}
     >
       <div className="flex items-center justify-between">
@@ -573,231 +586,29 @@ const HistoryComponent: React.FC = () => {
           </button>
         )}
       </div>
-      <ScrollArea>
-        <div className="mt-8 flex flex-col gap-1">
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-          <HistoryRow
-            amount="12"
-            sell={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/SUI.png",
-              name: "SUI",
-            }}
-            buy={{
-              image:
-                "https://raw.githubusercontent.com/sonarwatch/token-lists/main/images/common/USDT.png",
-              name: "USDT",
-            }}
-          />
-        </div>
-      </ScrollArea>
+      {lg ? (
+        <ScrollArea>
+          <Accordion type="single" collapsible className="max-w-full">
+            <div className="mt-4 flex w-full flex-col gap-2">
+              {dcas
+                ?.filter((dca) =>
+                  history_stage === "Active" ? dca.active : !dca.active,
+                )
+                .map((dca) => <HistoryRow key={dca.id} dca={dca} />)}
+            </div>
+          </Accordion>
+        </ScrollArea>
+      ) : (
+        <Accordion type="single" collapsible className="max-w-full">
+          <div className="mt-4 flex w-full flex-col gap-2">
+            {dcas
+              ?.filter((dca) =>
+                history_stage === "Active" ? dca.active : !dca.active,
+              )
+              .map((dca) => <HistoryRow key={dca.id} dca={dca} />)}
+          </div>
+        </Accordion>
+      )}
     </div>
   );
 };
@@ -816,48 +627,317 @@ const HistoryBadge: FC<HistoryBadgeProps> = ({ text, onClick, active }) => (
   </button>
 );
 
-const HistoryRow: FC<HistoryRowProps> = ({ amount, buy, sell }) => {
-  const { lg } = useBreakpoint();
+const HistoryRow: FC<HistoryRowProps> = ({ dca }: { dca: DCAObject }) => {
+  const { coinMetadataMap } = useAppContext();
+  const sellInfo = getTokenInfoFromMetadata(
+    coinMetadataMap,
+    `0x${dca.input.name}`,
+  );
+  const buyInfo = getTokenInfoFromMetadata(
+    coinMetadataMap,
+    `0x${dca.output.name}`,
+  );
+
+  const percentage = 100 - (dca.remainingOrders / dca.orderCount) * 100;
+
+  const sellBalance = BigNumber(
+    dca.orders.reduce((acc, order) => {
+      return acc.plus(order.input_amount);
+    }, new BigNumber(0)),
+  )
+    .minus(dca.inputBalance)
+    .abs()
+    .div(10 ** sellInfo.decimals)
+    .toFixed(2);
+
+  const spentBalance = BigNumber(
+    dca.orders.reduce((acc, order) => {
+      return acc.plus(order.input_amount);
+    }, new BigNumber(0)),
+  )
+    .div(10 ** sellInfo.decimals)
+    .toFixed(2);
+
+  const eachOrderSize = BigNumber(
+    dca.orders.reduce((acc, order) => {
+      return acc.plus(order.input_amount);
+    }, new BigNumber(0)),
+  )
+    .div(dca.orderCount)
+    .div(10 ** sellInfo.decimals)
+    .toFixed(2);
+
+  const buyBalance = BigNumber(
+    dca.orders.reduce((acc, order) => {
+      return acc.plus(order.output_amount);
+    }, new BigNumber(0)),
+  )
+    .div(10 ** buyInfo.decimals)
+    .toFixed(2);
+
+  const minPrice = BigNumber(dca.min)
+    .div(10 ** buyInfo.decimals)
+    .toFixed(5);
+
+  const maxPrice = BigNumber(dca.max)
+    .div(10 ** buyInfo.decimals)
+    .toFixed(5);
+
+  const [tab, setTab] = useState<"overview" | "orders">("overview");
 
   return (
-    <div className="flex w-full flex-row items-center justify-between rounded-lg bg-custom-gray-75 p-4 dark:bg-custom-dark-600">
-      <div className="flex w-full flex-row items-center justify-between">
-        <div className="flex flex-row">
-          <Avatar>
-            <AvatarImage
-              src={sell.image}
-              alt={sell.name}
-              width={24}
-              height={24}
-            />
-            <AvatarFallback className="bg-dark-gray-500 text-custom-gray-50 dark:text-custom-dark-800 ">
-              {sell.name}
-            </AvatarFallback>
-          </Avatar>
-          <Avatar className="-ml-3 border-2 border-custom-gray-75 dark:border-custom-dark-600">
-            <AvatarImage
-              src={buy.image}
-              alt={buy.name}
-              width={24}
-              height={24}
-            />
-            <AvatarFallback className="bg-dark-gray-500 text-custom-gray-50 dark:text-custom-dark-800 ">
-              {buy.name}
-            </AvatarFallback>
-          </Avatar>
-        </div>
-        <div className="flex flex-row items-center gap-3">
-          <div className="text-base font-semibold">{sell.name}</div>
-          <ArrowRight className="h-4 w-4" />
-          <div className="text-base font-semibold">{buy.name}</div>
-        </div>
-        <div className="text-base font-medium">
-          {amount} {sell.name}
-        </div>
-        {lg && <Progress value={46} className="h-2 max-w-40" />}
-        <div className="text-base font-medium">46%</div>
-        <CaretRight className="h-5 w-5" />
+    <AccordionItem value={dca.id}>
+      <div className="flex w-full flex-col justify-between gap-2 rounded-lg bg-custom-gray-75 p-2 dark:bg-custom-dark-600 lg:p-4">
+        <AccordionTrigger className="w-full justify-normal py-0">
+          <div className="flex w-full flex-row items-center gap-2">
+            <div className="flex w-[15%] flex-row lg:w-[10%] lg:px-2">
+              <Avatar>
+                <AvatarImage
+                  src={sellInfo.iconUrl as string}
+                  alt={sellInfo.symbol}
+                  width={24}
+                  height={24}
+                />
+                <AvatarFallback className="bg-dark-gray-500 text-custom-gray-50 dark:text-custom-dark-800 ">
+                  {sellInfo.symbol}
+                </AvatarFallback>
+              </Avatar>
+              <Avatar className="-ml-3 border-2 border-custom-gray-75 dark:border-custom-dark-600">
+                <AvatarImage
+                  src={buyInfo.iconUrl as string}
+                  alt={buyInfo.symbol}
+                  width={24}
+                  height={24}
+                />
+                <AvatarFallback className="bg-dark-gray-500 text-custom-gray-50 dark:text-custom-dark-800 ">
+                  {buyInfo.symbol}
+                </AvatarFallback>
+              </Avatar>
+            </div>
+            <div className="flex w-[30%] flex-row items-center gap-3 lg:w-[25%] lg:px-2">
+              <div className="text-base font-semibold">{sellInfo.symbol}</div>
+              <ArrowRight className="h-4 w-4" />
+              <div className="text-base font-semibold">{buyInfo.symbol}</div>
+            </div>
+            <div className="w-[25%] text-nowrap text-base font-medium lg:w-[20%] lg:px-2">
+              {BigNumber(dca.inputBalance)
+                .div(10 ** sellInfo.decimals)
+                .toFixed(2)}{" "}
+              {sellInfo.symbol}
+            </div>
+            <div className="w-[25%]"></div>
+            <div className="w-[25%] text-base font-medium lg:w-[10%] lg:px-2">
+              {percentage.toFixed(0)}%
+            </div>
+          </div>
+        </AccordionTrigger>
+        <AccordionContent className="flex w-full">
+          <div className="mt-2 w-full border-t border-t-custom-gray-300 pt-3 dark:border-t-custom-dark-400">
+            <div className="mb-4 flex flex-row gap-4">
+              <div
+                onClick={() => {
+                  setTab("overview");
+                }}
+                className={cn(
+                  "cursor-pointer text-base font-semibold transition-all duration-300",
+                  tab === "overview"
+                    ? "text-custom-black dark:text-white"
+                    : "dark:text-custom-gray-400 text-custom-gray-600",
+                )}
+              >
+                Overview
+              </div>
+              {dca.orders.length > 0 && (
+                <div
+                  onClick={() => {
+                    setTab("orders");
+                  }}
+                  className={cn(
+                    "cursor-pointer text-base font-semibold transition-all duration-300",
+                    tab === "orders"
+                      ? "text-custom-black dark:text-white"
+                      : "dark:text-custom-gray-400 text-custom-gray-600",
+                  )}
+                >
+                  Orders ({dca.orders.length})
+                </div>
+              )}
+            </div>
+            {tab === "overview" ? (
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-1 rounded-lg bg-custom-gray-100 p-4 dark:bg-custom-dark-400">
+                  <div className="flex flex-row items-center justify-between text-sm text-custom-gray-600">
+                    <div>DCA {sellInfo.symbol} Balance</div>
+                    <div className="font-semibold text-custom-black dark:text-custom-gray-25">
+                      {sellBalance} {sellInfo.symbol}
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between text-sm text-custom-gray-600">
+                    <div>Withdrawn {buyInfo.symbol}</div>
+                    <div className="font-semibold text-custom-black dark:text-custom-gray-25">
+                      {buyBalance} {buyInfo.symbol}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex w-full flex-col gap-1 rounded-lg border border-custom-gray-300 p-4 dark:border-custom-dark-400">
+                  <div className="flex flex-row items-center justify-between text-sm text-custom-gray-600">
+                    <div>Total Deposited</div>
+                    <div className="text-right text-sm font-semibold text-custom-black dark:text-white ">
+                      {BigNumber(dca.inputBalance)
+                        .div(10 ** sellInfo.decimals)
+                        .toFixed(2)}{" "}
+                      {sellInfo.symbol}
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between text-sm text-custom-gray-600">
+                    <div>Total Spent</div>
+                    <div className="text-right text-sm font-semibold text-custom-black dark:text-white ">
+                      {spentBalance} {sellInfo.symbol}
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between text-sm text-custom-gray-600">
+                    <div>Each Order Size</div>
+                    <div className="text-right text-sm font-semibold text-custom-black dark:text-white ">
+                      {eachOrderSize} {sellInfo.symbol}
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between text-sm text-custom-gray-600">
+                    <div>Minimum Price</div>
+                    <div className="text-right text-sm font-semibold text-custom-black dark:text-white ">
+                      {dca.min === "0" ? "~" : minPrice}
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between text-sm text-custom-gray-600">
+                    <div>Maximum Price</div>
+                    <div className="text-right text-sm font-semibold text-custom-black dark:text-white ">
+                      {dca.max === "18446744073709551615" ? "~" : maxPrice}
+                    </div>
+                  </div>
+                  <div className="my-2 w-full border-t border-custom-gray-300 dark:border-custom-dark-400"></div>
+                  <div className="flex flex-row items-center justify-between text-sm text-custom-gray-600">
+                    <div>Buying</div>
+                    <div className="text-right text-sm font-semibold text-custom-black dark:text-white ">
+                      {buyInfo.symbol}
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between text-sm text-custom-gray-600">
+                    <div>Interval</div>
+                    <div className="text-right text-sm font-semibold text-custom-black dark:text-white ">
+                      Every {dca.every}{" "}
+                      {
+                        {
+                          1: "Minute",
+                          2: "Hour",
+                          3: "Day",
+                          4: "Week",
+                        }[dca.timeScale]
+                      }
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between text-sm text-custom-gray-600">
+                    <div>Orders</div>
+                    <div className="text-right text-sm font-semibold text-custom-black dark:text-white ">
+                      {dca.orderCount}
+                    </div>
+                  </div>
+                  <div className="flex flex-row items-center justify-between text-sm text-custom-gray-600">
+                    <div>Created</div>
+                    <div className="text-right text-sm font-semibold text-custom-black dark:text-white">
+                      {new Date(dca.start * 1000).toLocaleDateString("en-GB", {
+                        day: "numeric",
+                        month: "short",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-4 rounded-lg bg-custom-gray-100 p-4 dark:bg-custom-dark-400">
+                <div className="grid grid-cols-3 px-2 text-xs font-medium uppercase text-custom-gray-600 lg:grid-cols-5">
+                  {/* Headers */}
+                  <div>From</div>
+                  <div className="hidden text-center lg:block">Rate</div>
+                  <div className="text-center">To</div>
+                  <div className="hidden text-center lg:block">Date</div>
+                  <div className="text-right">Detail</div>
+                </div>
+                <div className="flex flex-col gap-1">
+                  {dca.orders.map((order) => (
+                    <div
+                      key={order._id}
+                      className="grid grid-cols-3 rounded-md bg-custom-gray-150 p-2 px-2 text-xs font-medium text-custom-black dark:bg-custom-dark-500 dark:text-custom-gray-25 lg:grid-cols-5"
+                    >
+                      <div className="flex flex-row items-center gap-1">
+                        <Avatar className="h-5 w-5">
+                          <AvatarImage
+                            src={sellInfo.iconUrl as string}
+                            alt={sellInfo.symbol}
+                            width={12}
+                            height={12}
+                          />
+                          <AvatarFallback className="bg-dark-gray-500 text-custom-gray-50 dark:text-custom-dark-800 ">
+                            {sellInfo.symbol}
+                          </AvatarFallback>
+                        </Avatar>
+                        {BigNumber(order.input_amount)
+                          .div(10 ** sellInfo.decimals)
+                          .toFixed(1)}{" "}
+                        {sellInfo.symbol}
+                      </div>
+                      <div className="hidden items-center justify-center lg:flex">
+                        {BigNumber(order.input_amount)
+                          .div(BigNumber(order.output_amount))
+                          .toFixed(1)}{" "}
+                      </div>
+                      <div className="flex items-center justify-center gap-1">
+                        <Avatar className="h-5 w-5">
+                          <AvatarImage
+                            src={buyInfo.iconUrl as string}
+                            alt={buyInfo.symbol}
+                            width={12}
+                            height={12}
+                          />
+                          <AvatarFallback className="bg-dark-gray-500 text-custom-gray-50 dark:text-custom-dark-800 ">
+                            {buyInfo.symbol}
+                          </AvatarFallback>
+                        </Avatar>
+                        {BigNumber(order.output_amount)
+                          .div(10 ** buyInfo.decimals)
+                          .toFixed(1)}{" "}
+                        {buyInfo.symbol}
+                      </div>
+                      <div className="hidden items-center justify-center text-nowrap lg:flex">
+                        {/* Format 24/07/28, 21:12 */}
+                        {new Date(order.timestampMs).toLocaleDateString(
+                          "en-GB",
+                          {
+                            day: "numeric",
+                            month: "numeric",
+                            year: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          },
+                        )}
+                      </div>
+                      <a
+                        href={`https://suivision.xyz/txblock/${order.digest}`}
+                        target="_blank"
+                      >
+                        <div className="flex items-center justify-end">
+                          <ArrowSquareIn className="h-5 w-5" />
+                        </div>
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </AccordionContent>
       </div>
-    </div>
+    </AccordionItem>
   );
 };

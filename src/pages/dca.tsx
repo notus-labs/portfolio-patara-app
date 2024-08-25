@@ -16,7 +16,7 @@ const Page = () => {
     defaultValues: {
       sell: "0",
       every: "30",
-      time_scale: 0,
+      time_scale: 1,
       over: "2",
       minPrice: "0",
       maxPrice: "0",
@@ -38,3 +38,4 @@ const Page = () => {
 export default Page;
 Page.roundedFully = true;
 Page.heightFull = true;
+Page.paddingZero = true;

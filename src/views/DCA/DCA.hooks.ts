@@ -163,6 +163,7 @@ export function useDCAContext() {
       coinOut &&
       coinInRawAmount &&
       coinInRawAmount !== BigNumber(0) &&
+      !isNaN(coinInRawAmount.toNumber()) &&
       coinInRawAmount
     ) {
       setValue("buy_loading", true);

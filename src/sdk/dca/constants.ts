@@ -1,3 +1,2 @@
-export const WHITELIST_WITNESS = `0x216358a187f7a588d330f11052e9c1c16f46246fdd946613f64cc40871ab5356::whitelist_adapter::Witness`;
 export const DELEGATEE =
   "0x0c96b48925580099ddb1e9398ed51f3e8504b7793ffd7cee7b7f5b2c8c0e9271";

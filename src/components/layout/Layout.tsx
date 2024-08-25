@@ -11,8 +11,9 @@ export const Layout: FC<
     roundedFully?: boolean;
     showMobileHeader?: boolean;
     heightFull?: boolean;
+    paddingZero?: boolean;
   }
-> = ({ children, roundedFully, showMobileHeader, heightFull }) => {
+> = ({ children, roundedFully, showMobileHeader, heightFull, paddingZero }) => {
   const isClient = useIsClient();
 
   if (!isClient) return null;
@@ -26,6 +27,7 @@ export const Layout: FC<
           className={cn(
             "relative z-0 h-full px-5 md:px-0",
             heightFull && "h-full",
+            paddingZero && "px-0 sm:px-5 md:px-0",
           )}
         >
           <MobileHeader show={showMobileHeader} />

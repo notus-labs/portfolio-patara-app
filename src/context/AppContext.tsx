@@ -131,6 +131,10 @@ async function fetchCoinBalances(
     "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
   );
 
+  uniqueCoinTypes.add(
+    "0x1fc50c2a9edf1497011c793cb5c88fd5f257fd7009e85a489392f388b1118f82::tusk::TUSK",
+  );
+
   const metadataMap = await getCoinMetadataMap(
     client,
     Array.from(uniqueCoinTypes),

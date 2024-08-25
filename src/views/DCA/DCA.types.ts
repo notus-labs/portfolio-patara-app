@@ -1,6 +1,8 @@
 import BigNumber from "bignumber.js";
 import { z } from "zod";
 
+import { DCAObject } from "@/sdk";
+
 export type DcaPercentageBadgeProps = {
   text: string;
 };
@@ -58,13 +60,5 @@ export type HistoryBadgeProps = {
 };
 
 export type HistoryRowProps = {
-  sell: {
-    name: string;
-    image: string;
-  };
-  buy: {
-    name: string;
-    image: string;
-  };
-  amount: string;
+  dca: DCAObject;
 };

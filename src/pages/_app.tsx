@@ -36,6 +36,7 @@ export default function App({
     roundedFully?: boolean;
     showMobileHeader?: boolean;
     heightFull?: boolean;
+    paddingZero?: boolean;
   };
 }) {
   const getLayout =
@@ -45,6 +46,7 @@ export default function App({
         roundedFully={Component.roundedFully}
         showMobileHeader={Component.showMobileHeader}
         heightFull={Component.heightFull}
+        paddingZero={Component.paddingZero}
       >
         {page}
       </Layout>
