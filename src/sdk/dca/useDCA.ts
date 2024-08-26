@@ -11,6 +11,6 @@ export function useDCA() {
     queryKey: ["dca", address],
     queryFn: () => fetchDCAObjects(address!),
     enabled: !!address,
-    refetchInterval: 10000,
+    refetchInterval: 1000,
   });
 }

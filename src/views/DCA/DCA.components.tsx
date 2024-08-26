@@ -12,6 +12,7 @@ import {
 import BigNumber from "bignumber.js";
 import { AnimatePresence, motion } from "framer-motion";
 import { useFormContext, useWatch } from "react-hook-form";
+import { toast } from "sonner";
 
 import { TokenSelectionDialog } from "@/components/token/TokenSelectionDialog";
 import {
@@ -38,7 +39,7 @@ import { parseIntoRaw } from "@/lib/raw";
 import { parseInputEventToNumberString } from "@/lib/string";
 import { cn } from "@/lib/utils";
 
-import { DCAObject, useDCA } from "@/sdk";
+import { DCAObject, DCASDK, useDCA } from "@/sdk";
 
 import { useChangeUrl, useDCAContext } from "./DCA.hooks";
 import {
@@ -628,6 +629,7 @@ const HistoryBadge: FC<HistoryBadgeProps> = ({ text, onClick, active }) => (
 );
 
 const HistoryRow: FC<HistoryRowProps> = ({ dca }: { dca: DCAObject }) => {
+  const { lg } = useBreakpoint();
   const { coinMetadataMap } = useAppContext();
   const sellInfo = getTokenInfoFromMetadata(
     coinMetadataMap,
@@ -685,47 +687,52 @@ const HistoryRow: FC<HistoryRowProps> = ({ dca }: { dca: DCAObject }) => {
 
   const [tab, setTab] = useState<"overview" | "orders">("overview");
 
+  const { signExecuteAndWaitTransactionBlock } = useAppContext();
+
   return (
     <AccordionItem value={dca.id}>
       <div className="flex w-full flex-col justify-between gap-2 rounded-lg bg-custom-gray-75 p-2 dark:bg-custom-dark-600 lg:p-4">
         <AccordionTrigger className="w-full justify-normal py-0">
-          <div className="flex w-full flex-row items-center gap-2">
-            <div className="flex w-[15%] flex-row lg:w-[10%] lg:px-2">
-              <Avatar>
-                <AvatarImage
-                  src={sellInfo.iconUrl as string}
-                  alt={sellInfo.symbol}
-                  width={24}
-                  height={24}
-                />
-                <AvatarFallback className="bg-dark-gray-500 text-custom-gray-50 dark:text-custom-dark-800 ">
+          <div className="flex w-full flex-row items-center justify-between gap-2">
+            <div className="flex w-[65%] flex-row items-center justify-between gap-2">
+              <div className="flex w-[15%] flex-row lg:w-[25%] lg:px-2">
+                <Avatar>
+                  <AvatarImage
+                    src={sellInfo.iconUrl as string}
+                    alt={sellInfo.symbol}
+                    width={24}
+                    height={24}
+                  />
+                  <AvatarFallback className="bg-dark-gray-500 text-custom-gray-50 dark:text-custom-dark-800 ">
+                    {sellInfo.symbol}
+                  </AvatarFallback>
+                </Avatar>
+                <Avatar className="-ml-3 border-2 border-custom-gray-75 dark:border-custom-dark-600">
+                  <AvatarImage
+                    src={buyInfo.iconUrl as string}
+                    alt={buyInfo.symbol}
+                    width={24}
+                    height={24}
+                  />
+                  <AvatarFallback className="bg-dark-gray-500 text-custom-gray-50 dark:text-custom-dark-800 ">
+                    {buyInfo.symbol}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+              <div className="flex w-[60%] flex-row items-center gap-3 lg:px-2">
+                <div className="text-base font-semibold">{sellInfo.symbol}</div>
+                <ArrowRight className="h-4 w-4" />
+                <div className="text-base font-semibold">{buyInfo.symbol}</div>
+              </div>
+              {lg && (
+                <div className="w-[25%] text-nowrap text-base font-medium lg:w-[20%] lg:px-2">
+                  {BigNumber(dca.inputBalance)
+                    .div(10 ** sellInfo.decimals)
+                    .toFixed(2)}{" "}
                   {sellInfo.symbol}
-                </AvatarFallback>
-              </Avatar>
-              <Avatar className="-ml-3 border-2 border-custom-gray-75 dark:border-custom-dark-600">
-                <AvatarImage
-                  src={buyInfo.iconUrl as string}
-                  alt={buyInfo.symbol}
-                  width={24}
-                  height={24}
-                />
-                <AvatarFallback className="bg-dark-gray-500 text-custom-gray-50 dark:text-custom-dark-800 ">
-                  {buyInfo.symbol}
-                </AvatarFallback>
-              </Avatar>
+                </div>
+              )}
             </div>
-            <div className="flex w-[30%] flex-row items-center gap-3 lg:w-[25%] lg:px-2">
-              <div className="text-base font-semibold">{sellInfo.symbol}</div>
-              <ArrowRight className="h-4 w-4" />
-              <div className="text-base font-semibold">{buyInfo.symbol}</div>
-            </div>
-            <div className="w-[25%] text-nowrap text-base font-medium lg:w-[20%] lg:px-2">
-              {BigNumber(dca.inputBalance)
-                .div(10 ** sellInfo.decimals)
-                .toFixed(2)}{" "}
-              {sellInfo.symbol}
-            </div>
-            <div className="w-[25%]"></div>
             <div className="w-[25%] text-base font-medium lg:w-[10%] lg:px-2">
               {percentage.toFixed(0)}%
             </div>
@@ -852,6 +859,26 @@ const HistoryRow: FC<HistoryRowProps> = ({ dca }: { dca: DCAObject }) => {
                       })}
                     </div>
                   </div>
+                  {dca.active && (
+                    <button
+                      onClick={() => {
+                        const tx = DCASDK.stopAndDestroy({
+                          coinInType: dca.input.name,
+                          coinOutType: dca.output.name,
+                          dca: dca.id,
+                        });
+
+                        toast.promise(signExecuteAndWaitTransactionBlock(tx), {
+                          loading: "Loading...",
+                          success: "DCA Stopped",
+                          error: "Failed to stop DCA",
+                        });
+                      }}
+                      className="mt-5 w-full rounded-lg bg-custom-dark-500 py-4 text-base font-semibold text-custom-gray-25 dark:bg-custom-dark-700"
+                    >
+                      Close and Withdraw
+                    </button>
+                  )}
                 </div>
               </div>
             ) : (

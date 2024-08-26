@@ -8,6 +8,13 @@ import { getCoins, mergeCoins } from "@/sdk";
 
 import { DELEGATEE } from "./constants";
 
+export const DCASDK = new DcaSDK({
+  network: "mainnet",
+  fullNodeUrl: getFullnodeUrl("mainnet"),
+  packages: PACKAGES["mainnet"],
+  sharedObjects: SHARED_OBJECTS["mainnet"],
+});
+
 export async function newDCA(
   provider: SuiClient,
   address: string,
@@ -20,13 +27,6 @@ export async function newDCA(
   min?: bigint,
   max?: bigint,
 ): Promise<Transaction> {
-  const sdk = new DcaSDK({
-    network: "mainnet",
-    fullNodeUrl: getFullnodeUrl("mainnet"),
-    packages: PACKAGES["mainnet"],
-    sharedObjects: SHARED_OBJECTS["mainnet"],
-  });
-
   const transaction = new Transaction();
   let coinIn: TransactionArgument;
 
@@ -48,7 +48,7 @@ export async function newDCA(
     );
   }
 
-  sdk.newAndShare({
+  DCASDK.newAndShare({
     coinIn,
     coinInType: coin_in_type,
     coinOutType: coin_out_type,
