@@ -610,6 +610,15 @@ const HistoryComponent: React.FC = () => {
           </div>
         </Accordion>
       )}
+      {dcas?.filter((dca) =>
+        history_stage === "Active" ? dca.active : !dca.active,
+      ).length === 0 && (
+        <div className="flex h-full flex-col items-center justify-center py-12">
+          <div className="dark:text-custom-gray-400 text-lg font-semibold text-custom-black">
+            No {history_stage} DCA Found.
+          </div>
+        </div>
+      )}
     </div>
   );
 };

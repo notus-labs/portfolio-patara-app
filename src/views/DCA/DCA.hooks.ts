@@ -137,9 +137,9 @@ export function useDCAContext() {
 
   const insufficientBalance =
     balance && coinInRawAmount
-      ? coinInRawAmount
-          .div(BigNumber(10).pow(coinIn?.decimals || 9))
-          .gte(balance.balance)
+      ? balance.balance
+          .multipliedBy(BigNumber(10).pow(coinIn?.decimals || 9))
+          .lt(coinInRawAmount)
       : true;
 
   useEffect(() => {
