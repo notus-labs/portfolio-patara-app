@@ -48,11 +48,6 @@ export function useChangeUrl() {
       setValue("token_out", to as `0x${string}`);
       setFirstRender(false);
     }
-
-    if (exchangeRate) {
-      setValue("minPrice", exchangeRate.toFixed(5));
-      setValue("maxPrice", (exchangeRate * 1.01).toFixed(5));
-    }
   }, [from, to, setValue, firstRender, exchangeRate]);
 
   return;
@@ -216,6 +211,23 @@ export function useDCAContext() {
 
         invariant(address, "Address is required");
         invariant(exchangeRate, "Exchange rate is required");
+        invariant(coinInRawAmount, "Buy raw is required");
+
+        const amountPerTrade = coinInRawAmount
+          .div(BigNumber(10).pow(coinIn?.decimals || 9))
+          .div(BigNumber(over));
+
+        const minPricePerOrder = BigNumber(minPrice)
+          .multipliedBy(BigNumber(10).pow(coinOut?.decimals || 9))
+          .times(amountPerTrade)
+          .decimalPlaces(0)
+          .toFixed(0);
+
+        const maxPricePerOrder = BigNumber(maxPrice)
+          .multipliedBy(BigNumber(10).pow(coinOut?.decimals || 9))
+          .times(amountPerTrade)
+          .decimalPlaces(0)
+          .toFixed(0);
 
         const tx = await newDCA(
           client,
@@ -226,19 +238,11 @@ export function useDCAContext() {
           timeScale,
           coinInType,
           coinOutType,
-          advancedPriceStrategyOpen
-            ? BigInt(
-                BigNumber(minPrice)
-                  .multipliedBy(BigNumber(10 ** coinOut.decimals))
-                  .toString(),
-              )
+          advancedPriceStrategyOpen && minPricePerOrder
+            ? BigInt(minPricePerOrder)
             : undefined,
-          advancedPriceStrategyOpen
-            ? BigInt(
-                BigNumber(maxPrice)
-                  .multipliedBy(BigNumber(10 ** coinOut.decimals))
-                  .toString(),
-              )
+          advancedPriceStrategyOpen && maxPricePerOrder
+            ? BigInt(maxPricePerOrder)
             : undefined,
         );
 

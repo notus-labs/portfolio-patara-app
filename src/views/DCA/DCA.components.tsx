@@ -325,12 +325,6 @@ const SwapInput: React.FC<SwapInputProps> = ({ type }) => {
 
   const { data: price } = usePrice(coinType);
 
-  const { data: coinInPrice } = usePrice(coinInType);
-  const { data: coinOutPrice } = usePrice(coinOutType);
-
-  const exchangeRate =
-    coinInPrice && coinOutPrice ? coinInPrice / coinOutPrice : undefined;
-
   const priceMultipliedAmount = price ? price * parseFloat(amount) : undefined;
 
   const coinMetadata = coinType
@@ -352,11 +346,6 @@ const SwapInput: React.FC<SwapInputProps> = ({ type }) => {
         setValue("sell", coinOutAmount);
         setValue("sell_raw", coinOutAmountRaw);
       }
-    }
-
-    if (coinInPrice && exchangeRate) {
-      setValue("minPrice", exchangeRate.toFixed(5));
-      setValue("maxPrice", (exchangeRate * 1.01).toFixed(5));
     }
   };
 
@@ -497,6 +486,7 @@ const InputWithExtra: React.FC<InputWithExtraProps> = ({
             extra ? "w-1/4" : "w-full",
             label === "over" ? "w-3/4" : null,
           )}
+          placeholder="0"
           {...register(label, {
             onChange: (v: React.ChangeEvent<HTMLInputElement>) => {
               if (extra) {
@@ -687,12 +677,18 @@ const HistoryRow: FC<HistoryRowProps> = ({ dca }: { dca: DCAObject }) => {
     .toFixed(2);
 
   const minPrice = BigNumber(dca.min)
-    .div(10 ** buyInfo.decimals)
-    .toFixed(5);
+    .div(BigNumber(10).pow(buyInfo.decimals))
+    .div(
+      BigNumber(dca.amountPerTrade).div(BigNumber(10).pow(sellInfo.decimals)),
+    )
+    .toFixed(0);
 
   const maxPrice = BigNumber(dca.max)
-    .div(10 ** buyInfo.decimals)
-    .toFixed(5);
+    .div(BigNumber(10).pow(buyInfo.decimals))
+    .div(
+      BigNumber(dca.amountPerTrade).div(BigNumber(10).pow(sellInfo.decimals)),
+    )
+    .toFixed(0);
 
   const [tab, setTab] = useState<"overview" | "orders">("overview");
 
