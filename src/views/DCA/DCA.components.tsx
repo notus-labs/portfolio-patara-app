@@ -498,8 +498,13 @@ const InputWithExtra: React.FC<InputWithExtraProps> = ({
               if (extra) {
                 const value = v.target.value.replace(/[^0-9]/g, "");
 
-                if (label === "every" && value.length > 2) {
+                if (value.length > 2) {
                   setValue(label, value.slice(0, 2));
+                  return;
+                }
+
+                if (label === "over" && Number(value) >= 51) {
+                  setValue(label, "50");
                   return;
                 }
 

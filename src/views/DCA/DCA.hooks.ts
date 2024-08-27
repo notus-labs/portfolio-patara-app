@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import BigNumber from "bignumber.js";
 import { useFormContext, useWatch } from "react-hook-form";
 import { toast } from "sonner";
-import invariant from "ts-invariant";
 
 import { useAppContext } from "@/context/AppContext";
 import { useWalletContext } from "@/context/WalletContext";
@@ -218,10 +217,17 @@ export function useDCAContext() {
     toast.promise(
       async () => {
         if (disableTrade) return;
+        if (!coinInPrice) return;
+        if (!address) return;
 
-        invariant(address, "Address is required");
-        invariant(exchangeRate, "Exchange rate is required");
-        invariant(coinInRawAmount, "Buy raw is required");
+        if (
+          coinInRawAmount
+            .div(BigNumber(10).pow(coinIn.decimals || 9))
+            .multipliedBy(coinInPrice)
+            .lt(2)
+        ) {
+          throw new Error("Input should be more than 2$");
+        }
 
         const amountPerTrade = coinInRawAmount
           .div(BigNumber(10).pow(coinIn?.decimals || 9))
