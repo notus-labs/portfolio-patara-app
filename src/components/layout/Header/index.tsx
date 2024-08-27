@@ -98,6 +98,22 @@ export const Header: FC<{
               avatar={avatar}
               avatarFallback={avatarFallback}
             />
+            <HeaderButton
+              className="hidden dark:block"
+              onClick={() => {
+                setTheme("light");
+              }}
+            >
+              <Sun className="h-6 w-6 text-custom-black dark:text-white" />
+            </HeaderButton>
+            <HeaderButton
+              onClick={() => {
+                setTheme("dark");
+              }}
+              className="dark:hidden"
+            >
+              <Moon className="h-6 w-6 text-custom-black dark:text-white" />
+            </HeaderButton>
             <HeaderButton onClick={toggleSidebarOn}>
               <List className="h-6 w-6 text-custom-black dark:text-white " />
             </HeaderButton>
