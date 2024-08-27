@@ -256,6 +256,12 @@ const PercentageBadge: React.FC<DcaPercentageBadgeProps> = ({ text }) => {
 
   function onClick() {
     if (!balance) return;
+    if (balance.balance.isZero()) return;
+    if (balance.balance.lt(1)) {
+      setValue("sell", "0");
+      setValue("sell_raw", BigNumber(0));
+      return;
+    }
 
     const value =
       text === "100"

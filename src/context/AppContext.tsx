@@ -72,6 +72,7 @@ export function AppContextProvider({ children }: PropsWithChildren) {
   const { data, refetch } = useQuery({
     queryKey: ["suiCoinBalances", address],
     queryFn: () => fetchCoinBalances(client, address),
+    refetchInterval: 5000,
   });
 
   const value = {

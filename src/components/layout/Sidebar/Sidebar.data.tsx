@@ -25,7 +25,7 @@ export const SIDEBAR_ITEMS = [
     text: "DCA",
     icon: <Hourglass />,
     href: "/dca",
-    activated: false,
+    activated: true,
   },
   {
     text: "Send",

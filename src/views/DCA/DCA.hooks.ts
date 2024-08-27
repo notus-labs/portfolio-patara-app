@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import BigNumber from "bignumber.js";
 import { useFormContext, useWatch } from "react-hook-form";
@@ -149,10 +149,19 @@ export function useDCAContext() {
     }
   }, [coinInAmount, coinInPrice, exchangeRate, setValue]);
 
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   useEffect(() => {
     const abortController = new AbortController();
+    const currentAbortController = abortControllerRef.current;
 
-    // we should set the buy amount to the current price
+    // Abort previous request if still active
+    if (currentAbortController) {
+      currentAbortController.abort();
+    }
+
+    abortControllerRef.current = abortController;
+
     if (
       coinIn &&
       coinOut &&
@@ -180,16 +189,15 @@ export function useDCAContext() {
               .toFixed(4),
           );
           setValue("buy_raw", BigNumber(route.coinOut.amount.toString()));
-          setValue("buy_loading", false);
         })
-        .catch(() => {
-          setValue("buy_loading", false);
-        });
+        .catch(() => {})
+        .finally(() => setValue("buy_loading", false));
     }
 
     return () => {
-      abortController.abort();
-      setValue("buy_loading", false);
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
     };
   }, [coinInRawAmount, coinInType, coinOut, coinOutType, setValue]);
 
@@ -198,6 +206,8 @@ export function useDCAContext() {
     !coinIn ||
     !coinOut ||
     !coinInRawAmount ||
+    coinInRawAmount.isNaN() ||
+    coinInRawAmount.isZero() ||
     parseInt(every) === 0 ||
     isNaN(parseInt(every)) ||
     parseInt(over) === 0 ||
