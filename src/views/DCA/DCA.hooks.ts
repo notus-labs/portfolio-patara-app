@@ -229,6 +229,14 @@ export function useDCAContext() {
           throw new Error("Input should be more than 2$");
         }
 
+        if (advancedPriceStrategyOpen && !minPrice) {
+          throw new Error("Please enter min price");
+        }
+
+        if (advancedPriceStrategyOpen && !maxPrice) {
+          throw new Error("Please enter max price");
+        }
+
         const amountPerTrade = coinInRawAmount
           .div(BigNumber(10).pow(coinIn?.decimals || 9))
           .div(BigNumber(over));
