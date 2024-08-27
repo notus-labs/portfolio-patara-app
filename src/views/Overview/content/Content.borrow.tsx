@@ -179,11 +179,15 @@ const OverviewContentBorrowLendTable = ({
             <thead className="tr bg-custom-gray-100 dark:bg-custom-dark-700 ">
               <tr>
                 <th className="text-left">
-                  {type === "borrow"
-                    ? "Borrowed"
-                    : type === "lend"
-                      ? "Supplied"
-                      : "Rewards"}
+                  <>
+                    {
+                      {
+                        borrow: "Borrowed",
+                        lend: "Supplied",
+                        rewards: "Rewards",
+                      }[type]
+                    }
+                  </>
                 </th>
                 <th className="text-left">Price</th>
                 <th className="text-left">Balance</th>
