@@ -23,18 +23,18 @@ export const OverviewContentBorrowLend = ({
   const platform = getPlatform(borrowlend.platformId, data);
   const healthRatio = borrowlend.data.healthRatio || null;
   return (
-    <div className="flex w-full flex-col gap-5 rounded-xl bg-custom-gray-50 py-3 pb-10">
+    <div className="flex w-full flex-col gap-5 rounded-xl bg-custom-gray-50 py-3  pb-10 dark:bg-custom-dark-800">
       <div className="flex flex-row items-center justify-between px-5 py-3">
         <div className="flex flex-row items-center gap-2">
-          <div className="rounded-full bg-custom-black p-1">
+          <div className="rounded-full bg-custom-black p-1  dark:bg-white">
             <Avatar>
               <AvatarImage src={platform?.image} alt={platform?.name} />
-              <AvatarFallback className="border border-black text-custom-black">
+              <AvatarFallback className="border border-black text-custom-black dark:text-white ">
                 {platform?.name.slice(0, 2).toUpperCase()}
               </AvatarFallback>
             </Avatar>
           </div>
-          <h3 className="text-lg font-semibold text-custom-black sm:text-xl">
+          <h3 className="text-lg font-semibold text-custom-black dark:text-white  sm:text-xl">
             {platform?.name}
           </h3>
           <div className="ml-3 hidden flex-row gap-2 sm:flex">
@@ -82,7 +82,7 @@ export const OverviewContentBorrowLend = ({
                       cy="18"
                       r="16"
                       fill="none"
-                      className="stroke-current text-custom-gray-100"
+                      className="stroke-current text-custom-gray-100 dark:text-custom-dark-500 "
                       strokeWidth="3"
                       strokeDasharray="100"
                       strokeDashoffset={(healthRatio || 1) * 100}
@@ -114,13 +114,13 @@ export const OverviewContentBorrowLend = ({
                       : "text-success-500",
                 )}
               >
-                {(healthRatio || 1) * 100}%
+                {((healthRatio || 1) * 100).toFixed(2)}%
               </div>
             </div>
           )}
         </div>
         <div className="flex flex-row items-center gap-2">
-          <h3 className="text-lg font-semibold text-custom-black sm:text-xl">
+          <h3 className="text-lg font-semibold text-custom-black dark:text-white  sm:text-xl">
             ${borrowlend.value?.toFixed(2)}
           </h3>
         </div>
@@ -166,7 +166,7 @@ const OverviewContentBorrowLendTable = ({
 }) => {
   return (
     <div className="pt-5">
-      <div className="pb-5 pl-5 text-xl font-semibold text-custom-black">
+      <div className="pb-5 pl-5 text-xl font-semibold text-custom-black dark:text-white ">
         {type === "borrow"
           ? "Borrowing"
           : type === "lend"
@@ -176,7 +176,7 @@ const OverviewContentBorrowLendTable = ({
       <div className="px-5 sm:px-0">
         <div className="w-full flex-auto overflow-auto">
           <table className="w-full sm:table-fixed">
-            <thead className="tr bg-custom-gray-100">
+            <thead className="tr bg-custom-gray-100 dark:bg-custom-dark-700 ">
               <tr>
                 <th className="text-left">
                   {type === "borrow"
@@ -216,12 +216,12 @@ const OverviewContentBorrowLendTable = ({
                               src={token?.logoURI}
                               alt={token?.symbol}
                             />
-                            <AvatarFallback className="border border-black text-custom-black">
+                            <AvatarFallback className="border border-black text-custom-black dark:text-white ">
                               {token?.symbol.slice(0, 2).toUpperCase()}
                             </AvatarFallback>
                           </Avatar>
                         </div>
-                        <div className="text-sm font-medium text-custom-black">
+                        <div className="text-sm font-medium text-custom-black dark:text-white ">
                           {token?.symbol}
                         </div>
                       </div>

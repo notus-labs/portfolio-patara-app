@@ -5,10 +5,10 @@ import {
   CoinMetadata,
   SuiClient,
   SuiTransactionBlockResponse,
-  getFullnodeUrl,
-} from "@mysten/sui.js/client";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
-import { normalizeStructTag } from "@mysten/sui.js/utils";
+} from "@mysten/sui/client";
+import { Transaction } from "@mysten/sui/transactions";
+import { normalizeStructTag } from "@mysten/sui/utils";
+import { useSuiClient } from "@suiet/wallet-kit";
 import { useQuery } from "@tanstack/react-query";
 
 import {
@@ -17,11 +17,13 @@ import {
   parseCoinBalances,
 } from "@/lib/coinBalance";
 import { getCoinMetadataMap } from "@/lib/coinMetadata";
+import { NORMALIZED_SUI_COINTYPE } from "@/lib/coinType";
 
 import { useWalletContext } from "./WalletContext";
 
 type AppContextType = {
   isSidebarOpen: boolean;
+  refetchCoinBalances: () => void;
   toggleSidebarOff: () => void;
   toggleSidebarOn: () => void;
   isAccountDrawerOpen: boolean;
@@ -32,12 +34,13 @@ type AppContextType = {
   coinMetadataMap: Record<string, CoinMetadata>;
   coinBalancesRaw: CoinBalance[];
   signExecuteAndWaitTransactionBlock: (
-    txb: TransactionBlock,
+    txb: Transaction,
   ) => Promise<SuiTransactionBlockResponse>;
 };
 
 const AppContext = createContext<AppContextType>({
   isSidebarOpen: false,
+  refetchCoinBalances: () => {},
   toggleSidebarOff: () => {},
   toggleSidebarOn: () => {},
   isAccountDrawerOpen: false,
@@ -62,21 +65,21 @@ export function AppContextProvider({ children }: PropsWithChildren) {
 
   const toggleAccountDrawerOff = () => setIsAccountDrawerOpen(false);
   const toggleAccountDrawerOn = () => setIsAccountDrawerOpen(true);
-
-  const client = new SuiClient({
-    url: getFullnodeUrl("mainnet"),
-  });
+  
+  const client = useSuiClient();
   const { address, signExecuteAndWaitTransactionBlock } = useWalletContext();
 
-  const { data } = useQuery({
+  const { data, refetch } = useQuery({
     queryKey: ["suiCoinBalances", address],
     queryFn: () => fetchCoinBalances(client, address),
+    refetchInterval: 5000,
   });
 
   const value = {
     isSidebarOpen,
     toggleSidebarOff,
     toggleSidebarOn,
+    refetchCoinBalances: refetch,
     isAccountDrawerOpen,
     toggleAccountDrawerOff,
     toggleAccountDrawerOn,
@@ -84,7 +87,7 @@ export function AppContextProvider({ children }: PropsWithChildren) {
     coinBalancesMap: data?.coinBalancesMap ?? {},
     coinMetadataMap: data?.coinMetadataMap ?? {},
     coinBalancesRaw: data?.coinBalancesRaw ?? [],
-    signExecuteAndWaitTransactionBlock: (txb: TransactionBlock) =>
+    signExecuteAndWaitTransactionBlock: (txb: Transaction) =>
       signExecuteAndWaitTransactionBlock(client, txb),
   };
 
@@ -95,12 +98,18 @@ async function fetchCoinBalances(
   client: SuiClient,
   address?: string,
 ): Promise<{
+  uniqueCoinTypes: string[];
   coinBalancesMap: Record<string, ParsedCoinBalance>;
   coinMetadataMap: Record<string, CoinMetadata>;
   coinBalancesRaw: CoinBalance[];
 }> {
   if (!address)
-    return { coinBalancesMap: {}, coinMetadataMap: {}, coinBalancesRaw: [] };
+    return {
+      uniqueCoinTypes: [],
+      coinBalancesMap: {},
+      coinMetadataMap: {},
+      coinBalancesRaw: [],
+    };
 
   const coinBalancesRaw = (
     await client.getAllBalances({
@@ -109,7 +118,24 @@ async function fetchCoinBalances(
   ).map((cb) => ({ ...cb, coinType: normalizeStructTag(cb.coinType) }));
 
   const coinStructs = await getAllCoins(client, address);
-  const uniqueCoinTypes = new Set(coinStructs.map((coin) => coin.coinType));
+  const uniqueCoinTypes = new Set(
+    coinStructs.map((coin) => normalizeStructTag(coin.coinType)),
+  );
+
+  uniqueCoinTypes.add(NORMALIZED_SUI_COINTYPE);
+
+  uniqueCoinTypes.add(
+    "0xc060006111016b8a020ad5b33834984a437aaa7d3c74c18e09a95d48aceab08c::coin::COIN",
+  );
+
+  uniqueCoinTypes.add(
+    "0x5d4b302506645c37ff133b98c4b50a5ae14841659738d6d733d59d0d217a93bf::coin::COIN",
+  );
+
+  uniqueCoinTypes.add(
+    "0x1fc50c2a9edf1497011c793cb5c88fd5f257fd7009e85a489392f388b1118f82::tusk::TUSK",
+  );
+
   const metadataMap = await getCoinMetadataMap(
     client,
     Array.from(uniqueCoinTypes),
@@ -122,6 +148,7 @@ async function fetchCoinBalances(
   );
 
   return {
+    uniqueCoinTypes: Array.from(uniqueCoinTypes),
     coinBalancesMap,
     coinMetadataMap: metadataMap,
     coinBalancesRaw,

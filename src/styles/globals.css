@@ -38,6 +38,14 @@ thead {
   border-bottom: 1px solid #c8c8dc;
 }
 
+.dark thead {
+  th {
+    color: #58585c;
+  }
+
+  border-bottom: 1px solid #202024;
+}
+
 thead.tr {
   th {
     padding-top: 20px;
@@ -63,6 +71,18 @@ tbody {
   }
 }
 
+.dark tbody {
+  td {
+    color: white;
+  }
+
+  tr:not(:last-child) {
+    td {
+      border-bottom: 1px solid #202024;
+    }
+  }
+}
+
 tbody.tr {
   td {
     padding-top: 20px;
@@ -70,6 +90,17 @@ tbody.tr {
   tr:last-child {
     td {
       border-bottom: 1px solid #c8c8dc;
+    }
+  }
+}
+
+.dark tbody.tr {
+  td {
+    padding-top: 20px;
+  }
+  tr:last-child {
+    td {
+      border-bottom: 1px solid #202024;
     }
   }
 }

@@ -13,8 +13,8 @@ import {
   DevInspectTransactionBlockParams,
   SuiClient,
   SuiTransactionBlockResponse,
-} from "@mysten/sui.js/client";
-import { TransactionBlock } from "@mysten/sui.js/transactions";
+} from "@mysten/sui/client";
+import { Transaction } from "@mysten/sui/transactions";
 import { WalletAccount } from "@mysten/wallet-standard";
 import { useWallet } from "@suiet/wallet-kit";
 import { toast } from "sonner";
@@ -29,7 +29,7 @@ interface WalletContext {
   disconnectWallet: () => Promise<void>;
   signExecuteAndWaitTransactionBlock: (
     suiClient: SuiClient,
-    txb: TransactionBlock,
+    txb: Transaction,
   ) => Promise<SuiTransactionBlockResponse>;
 }
 
@@ -114,7 +114,7 @@ export function WalletContextProvider({ children }: PropsWithChildren) {
   // Note: Do NOT import and use this function directly. Instead, use the signExecuteAndWaitTransactionBlock
   // from AppContext.
   const signExecuteAndWaitTransactionBlock = useCallback(
-    async (suiClient: SuiClient, txb: TransactionBlock) => {
+    async (suiClient: SuiClient, txb: Transaction) => {
       const _address = impersonatedAddress ?? account?.address;
       if (_address) {
         (async () => {
@@ -140,21 +140,21 @@ export function WalletContextProvider({ children }: PropsWithChildren) {
       if (!account) throw new Error("Missing account");
 
       try {
-        const signedTxb = await adapter.signTransactionBlock({
-          transactionBlock: txb,
+        const signedTxb = await adapter.signTransaction({
+          transaction: txb,
           account,
           chain: chain.id as `${string}::${string}`,
         });
 
         const res = await suiClient.executeTransactionBlock({
-          transactionBlock: signedTxb.transactionBlockBytes,
+          transactionBlock: signedTxb.bytes,
           signature: signedTxb.signature,
           options: {
             showEffects: true,
           },
         });
 
-        await suiClient.waitForTransactionBlock({
+        await suiClient.waitForTransaction({
           digest: res.digest,
         });
 
@@ -178,10 +178,10 @@ export function WalletContextProvider({ children }: PropsWithChildren) {
 
         setAccountAddress(_address);
         toast.info(
-          `Switched to ${_account?.label ? _account.label : addressNameServiceName ?? _address}`,
+          `Switched to ${_account?.label ? _account.label : (addressNameServiceName ?? _address)}`,
           {
             description: _account?.label
-              ? addressNameServiceName ?? _address
+              ? (addressNameServiceName ?? _address)
               : undefined,
           },
         );

@@ -1,4 +1,4 @@
-import { SuiClient } from "@mysten/sui.js/client";
+import { SuiClient } from "@mysten/sui/client";
 import { FetchersResult, TokenInfo } from "@sonarwatch/portfolio-core";
 import { useQuery } from "@tanstack/react-query";
 import { invariant } from "ts-invariant";

@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -24,10 +25,25 @@ const config: Config = {
           },
           gray: {
             600: "#787882",
+            300: "#B4B4BE",
             200: "#C8C8DC",
+            150: "#D2D2E1",
             100: "#DCDCE6",
             75: "#EBEBF5",
             50: "#F5F5FF",
+            25: "#FAFAFF",
+          },
+          dark: {
+            900: "#0C0C10",
+            800: "#18181C",
+            700: "#202024",
+            600: "#2C2C30",
+            500: "#343438",
+            400: "#404044",
+            300: "#4C4C50",
+            200: "#58585C",
+            100: "#646468",
+            10: "#949498",
           },
           "dark-blue": "#001229",
           black: "#0C0C14",
@@ -378,8 +394,23 @@ const config: Config = {
       screens: {
         "2xl": "1440px",
       },
+      keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
 };
+
 export default config;

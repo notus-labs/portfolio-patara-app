@@ -1,4 +1,5 @@
-import { CoinMetadata, SuiClient } from "@mysten/sui.js/client";
+import { CoinMetadata, SuiClient } from "@mysten/sui/client";
+import { normalizeStructTag } from "@mysten/sui/utils";
 
 import { extractSymbolFromCoinType } from "@/lib/coinType";
 
@@ -15,7 +16,7 @@ export const getCoinMetadataMap = async (
     const metadata = coinMetadata[i];
     if (!metadata) continue;
 
-    const coinType = uniqueCoinTypes[i];
+    const coinType = normalizeStructTag(uniqueCoinTypes[i]);
     const symbol = metadata?.symbol ?? extractSymbolFromCoinType(coinType);
     const name = metadata?.name ?? symbol;
     const iconUrl = metadata?.iconUrl;

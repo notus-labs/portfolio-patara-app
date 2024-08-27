@@ -6,6 +6,7 @@ import {
   GithubIcon,
   PataraIcon,
   PataraStrictIcon,
+  PataraWhiteIcon,
   TwitterIcon,
 } from "@/components/shared/icon";
 import useBreakpoint from "@/hooks/useBreakpoint";
@@ -23,13 +24,16 @@ export const Sidebar: FC = () => {
       {md && (
         <nav
           className={cn(
-            "flex h-[calc(100vh_-_16px)] max-w-64 flex-col justify-between rounded-2xl bg-custom-gray-50 p-3 lg:w-full lg:p-5",
+            "flex h-[calc(100vh_-_16px)] max-w-64 flex-col justify-between rounded-2xl bg-custom-gray-50 p-3  dark:bg-custom-dark-800 lg:w-full lg:p-5",
             "sticky top-2 z-10",
           )}
         >
           <section className="flex flex-col gap-5">
             {lg ? (
-              <PataraIcon className="h-12" />
+              <>
+                <PataraIcon className="h-12 dark:hidden" />
+                <PataraWhiteIcon className="hidden h-12 dark:block" />
+              </>
             ) : (
               <PataraStrictIcon className="w-8" />
             )}
@@ -60,7 +64,7 @@ export const Sidebar: FC = () => {
                 <a
                   href="https://patara.app"
                   target="_blank"
-                  className="transition-all duration-500 hover:text-primary-500"
+                  className="transition-all duration-500 hover:text-primary-500 dark:text-gray-600 hover:dark:text-primary-300"
                 >
                   Terms of Service
                 </a>
@@ -68,7 +72,7 @@ export const Sidebar: FC = () => {
                 <a
                   href="https://patara.app"
                   target="_blank"
-                  className="transition-all duration-500 hover:text-primary-500"
+                  className="transition-all duration-500 hover:text-primary-500 dark:text-gray-600 hover:dark:text-primary-300"
                 >
                   Privacy Policy
                 </a>
