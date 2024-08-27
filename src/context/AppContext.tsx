@@ -65,7 +65,7 @@ export function AppContextProvider({ children }: PropsWithChildren) {
 
   const toggleAccountDrawerOff = () => setIsAccountDrawerOpen(false);
   const toggleAccountDrawerOn = () => setIsAccountDrawerOpen(true);
-  
+
   const client = useSuiClient();
   const { address, signExecuteAndWaitTransactionBlock } = useWalletContext();
 
