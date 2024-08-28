@@ -43,6 +43,20 @@ export function getTokenInfoFromMetadata(
     iconUrl: "",
   };
 
+  if (
+    address ===
+    "0x93c5b75322b5f9fc194e16d869b30a1db8d1f1826b2371c776c21c3d6a375b10::suitable::SUITABLE"
+  ) {
+    return {
+      name: "SUITABLE",
+      symbol: "TABLE",
+      decimals: 9,
+      description: "Suitable",
+      iconUrl:
+        "https://tablesui.xyz/wp-content/uploads/2024/02/tablelogo200x200.png",
+    };
+  }
+
   const suiToken = SuiTokenList.tokens.find(
     (token) => token.address === address,
   );
