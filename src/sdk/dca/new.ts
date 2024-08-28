@@ -59,7 +59,7 @@ export async function newDCA(
     max,
     min,
     tx: transaction,
-    fee: 1_000_000,
+    fee: 1,
     witnessType:
       "0xae944b93ff026d699a9a4e766ffa60be7b22197b8069ca4fa2aac15cfa3ef652::whitelist_adapter::Witness",
   });
