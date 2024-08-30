@@ -1,10 +1,10 @@
 import Skeleton from "react-loading-skeleton";
 
 import { usePortfolio } from "@/hooks/usePortfolio";
+import { formatNumberWith2Decimal } from "@/lib/format";
 
 import { OverviewBadge } from "./Overview.components";
 import { BADGES, Badges } from "./Overview.types";
-import { formatNumberWith2Decimal } from "@/lib/format";
 
 export const OverviewHeader = () => {
   const { data, isLoading } = usePortfolio();

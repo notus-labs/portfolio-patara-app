@@ -7,11 +7,11 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getPlatform, usePlatforms } from "@/hooks/usePlatforms";
+import { formatNumberWith2Decimal, formatUsdWithCents } from "@/lib/format";
 import { getTokenInfo } from "@/lib/getTokenInfo";
 import { cn } from "@/lib/utils";
 
 import { OverviewContentBadge } from "../Overview.components";
-import { formatNumberWith2Decimal, formatUsdWithCents } from "@/lib/format";
 
 export const OverviewContentBorrowLend = ({
   borrowlend,
@@ -245,7 +245,9 @@ const OverviewContentBorrowLendTable = ({
                       <td className="text-left"></td>
                     )}
                     <td className="text-right">
-                      {formatUsdWithCents(asset.data.amount * (asset.data.price || 0)) }
+                      {formatUsdWithCents(
+                        asset.data.amount * (asset.data.price || 0),
+                      )}
                     </td>
                   </tr>
                 );

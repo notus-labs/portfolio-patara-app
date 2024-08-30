@@ -7,8 +7,8 @@ import {
 } from "@sonarwatch/portfolio-core";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { getTokenInfo } from "@/lib/getTokenInfo";
 import { formatNumberWith2Decimal, formatUsdWithCents } from "@/lib/format";
+import { getTokenInfo } from "@/lib/getTokenInfo";
 
 export const OverviewContentWallet = ({
   wallet,
