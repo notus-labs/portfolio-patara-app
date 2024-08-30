@@ -168,3 +168,20 @@ export const formatToken = (
 };
 
 export const formatLtv = (value: BigNumber) => formatPercent(value, { dp: 0 });
+
+export const formatUsdWithCents = (value: number | undefined | null) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    currency: "USD",
+  }).format(value ?? 0);
+};
+
+export const formatNumberWith2Decimal = (value: number | undefined | null) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "decimal",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value ?? 0);
+};

@@ -7,6 +7,7 @@ import {
 } from "@sonarwatch/portfolio-core";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { formatNumberWith2Decimal, formatUsdWithCents } from "@/lib/format";
 import { getTokenInfo } from "@/lib/getTokenInfo";
 
 export const OverviewContentWallet = ({
@@ -28,7 +29,7 @@ export const OverviewContentWallet = ({
           </h3>
         </div>
         <h3 className="text-xl font-semibold text-custom-black dark:text-white ">
-          ${wallet.value?.toFixed(2)}
+          {formatUsdWithCents(wallet.value)}
         </h3>
       </div>
       <WalletTokenTable
@@ -81,10 +82,10 @@ const WalletTokenTable = ({
                     </Avatar>
                     <span>{tokenInfoData.name}</span>
                   </td>
-                  <td>${token.price?.toFixed(2)}</td>
-                  <td>{token.amount?.toFixed(2)}</td>
+                  <td>{formatUsdWithCents(token.price)}</td>
+                  <td>{formatNumberWith2Decimal(token.amount)}</td>
                   <td className="text-right">
-                    ${(token.amount * (token.price || 0)).toFixed(2)}
+                    {formatUsdWithCents(token.amount * (token.price || 0))}
                   </td>
                 </tr>
               );
