@@ -4,6 +4,7 @@ import { usePortfolio } from "@/hooks/usePortfolio";
 
 import { OverviewBadge } from "./Overview.components";
 import { BADGES, Badges } from "./Overview.types";
+import { formatNumberWith2Decimal } from "@/lib/format";
 
 export const OverviewHeader = () => {
   const { data, isLoading } = usePortfolio();
@@ -16,7 +17,7 @@ export const OverviewHeader = () => {
           {isLoading ? (
             <Skeleton className="dark:bg-custom-dark-200" width={200} />
           ) : (
-            <>{data?.value?.toFixed(2)} USD</>
+            <>{formatNumberWith2Decimal(data?.value)} USD</>
           )}
         </h1>
       </div>

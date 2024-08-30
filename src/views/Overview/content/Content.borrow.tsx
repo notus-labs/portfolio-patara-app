@@ -11,6 +11,7 @@ import { getTokenInfo } from "@/lib/getTokenInfo";
 import { cn } from "@/lib/utils";
 
 import { OverviewContentBadge } from "../Overview.components";
+import { formatNumberWith2Decimal, formatUsdWithCents } from "@/lib/format";
 
 export const OverviewContentBorrowLend = ({
   borrowlend,
@@ -121,7 +122,7 @@ export const OverviewContentBorrowLend = ({
         </div>
         <div className="flex flex-row items-center gap-2">
           <h3 className="text-lg font-semibold text-custom-black dark:text-white  sm:text-xl">
-            ${borrowlend.value?.toFixed(2)}
+            {formatUsdWithCents(borrowlend.value)}
           </h3>
         </div>
       </div>
@@ -231,10 +232,10 @@ const OverviewContentBorrowLendTable = ({
                       </div>
                     </td>
                     <td className="text-left">
-                      ${asset.data.price?.toFixed(2)}
+                      {formatUsdWithCents(asset.data.price)}
                     </td>
                     <td className="text-left">
-                      {asset.data.amount.toFixed(2)}
+                      {formatNumberWith2Decimal(asset.data.amount)}
                     </td>
                     {type === "borrow" || type === "lend" ? (
                       <td className="text-left">
@@ -244,8 +245,7 @@ const OverviewContentBorrowLendTable = ({
                       <td className="text-left"></td>
                     )}
                     <td className="text-right">
-                      $
-                      {(asset.data.amount * (asset.data.price || 0)).toFixed(2)}
+                      {formatUsdWithCents(asset.data.amount * (asset.data.price || 0)) }
                     </td>
                   </tr>
                 );
