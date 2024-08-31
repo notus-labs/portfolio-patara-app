@@ -7,6 +7,7 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getPlatform, usePlatforms } from "@/hooks/usePlatforms";
+import { formatNumberWith2Decimal, formatUsdWithCents } from "@/lib/format";
 import { getTokenInfo } from "@/lib/getTokenInfo";
 import { cn } from "@/lib/utils";
 
@@ -145,12 +146,15 @@ const OverviewContentLiquidityTable = ({
 
                         return (
                           <span key={token.address}>
-                            {liquidity.data.amount.toFixed(2)} {token.symbol}
+                            {formatNumberWith2Decimal(liquidity.data.amount)}{" "}
+                            {token.symbol}
                           </span>
                         );
                       })}
                     </td>
-                    <td className="text-right">{asset.value?.toFixed(2)}</td>
+                    <td className="text-right">
+                      {formatUsdWithCents(asset.value)}
+                    </td>
                   </tr>
                 );
               })}
