@@ -7,11 +7,11 @@ import {
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getPlatform, usePlatforms } from "@/hooks/usePlatforms";
+import { formatNumberWith2Decimal, formatUsdWithCents } from "@/lib/format";
 import { getTokenInfo } from "@/lib/getTokenInfo";
 import { cn } from "@/lib/utils";
 
 import { OverviewContentBadge } from "../Overview.components";
-import { formatNumberWith2Decimal, formatUsdWithCents } from "@/lib/format";
 
 export const OverviewContentLP = ({
   liquidity,
