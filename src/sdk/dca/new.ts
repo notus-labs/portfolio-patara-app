@@ -57,6 +57,7 @@ export async function newDCA(
     numberOfOrders: number_of_orders,
     timeScale: time_scale,
     max,
+    fee: 0.1,
     min,
     tx: transaction,
     witnessType:
