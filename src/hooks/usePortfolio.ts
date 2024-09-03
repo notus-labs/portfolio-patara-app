@@ -46,7 +46,7 @@ async function fetchSuiPortfolio(
           if (getTokenInfo(tokenInfo, asset.data.address).name !== "Unknown")
             return;
 
-          const address = asset.data.address.replaceAll("-", "::");
+          const address = asset.data.address?.replaceAll("-", "::");
           tokensToFetch.add(address);
         }
       });
@@ -60,8 +60,8 @@ async function fetchSuiPortfolio(
     const newTokenInfo = { ...tokenInfo };
 
     Object.entries(coinMetadataMap).forEach(([address, metadata]) => {
-      newTokenInfo[address.replaceAll("::", "-")] = {
-        address: address.replaceAll("::", "-"),
+      newTokenInfo[address?.replaceAll("::", "-")] = {
+        address: address?.replaceAll("::", "-"),
         name: metadata.name,
         symbol: metadata.symbol,
         decimals: metadata.decimals,

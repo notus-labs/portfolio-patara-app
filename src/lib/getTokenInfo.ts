@@ -29,7 +29,7 @@ export function getTokenInfo(
   const token = tokenInfo[address];
   if (token) return token;
 
-  address = address.replaceAll("-", "::");
+  address = address?.replaceAll("-", "::");
 
   const suiToken = SuiTokenList.tokens.find(
     (token) => token.address === address,
