@@ -32,7 +32,7 @@ async function fetchSuiPortfolio(
   invariant(client, "Client is required");
 
   let data: FetchersResult = await fetch(
-    `https://api.patara.app/sui/v1/${address}`,
+    `https://api.patara.app/portfolio/sui/v1/${address}`,
   ).then((res) => res.json());
 
   // @ts-expect-error tokenInfo is not defined

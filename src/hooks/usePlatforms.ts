@@ -15,8 +15,8 @@ export function usePlatforms() {
 }
 
 async function fetchSuiPlatforms(): Promise<Platform[]> {
-  return fetch(`https://api.patara.app/supported_platforms`).then((res) =>
-    res.json(),
+  return fetch(`https://api.patara.app/portfolio/supported_platforms`).then(
+    (res) => res.json(),
   );
 }
 

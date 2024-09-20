@@ -7,7 +7,7 @@ import {
 
 export async function fetchDCAObjects(owner: string): Promise<DCAObject[]> {
   const response = await fetch(
-    `https://dca.api.patara.app/api/dcas?owner=${owner}`,
+    `https://api.patara.app/dca/api/dcas?owner=${owner}`,
   );
   const data = await response.json();
   console.log(data);
@@ -16,7 +16,7 @@ export async function fetchDCAObjects(owner: string): Promise<DCAObject[]> {
 
 export async function fetchDCAOrders(dca: string): Promise<DCAOrder[]> {
   const response = await fetch(
-    `https://dca.api.patara.app/api/dcas/${dca}/orders`,
+    `https://api.patara.app/dca/api/dcas/${dca}/orders`,
   );
   const data = await response.json();
 
