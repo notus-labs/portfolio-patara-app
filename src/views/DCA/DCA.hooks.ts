@@ -217,7 +217,6 @@ export function useDCAContext() {
     toast.promise(
       async () => {
         if (disableTrade) return;
-        if (!coinInPrice) return;
         if (!address) return;
 
         // if (
