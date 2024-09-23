@@ -220,14 +220,14 @@ export function useDCAContext() {
         if (!coinInPrice) return;
         if (!address) return;
 
-        if (
-          coinInRawAmount
-            .div(BigNumber(10).pow(coinIn.decimals || 9))
-            .multipliedBy(coinInPrice)
-            .lt(2)
-        ) {
-          throw new Error("Input should be more than 2$");
-        }
+        // if (
+        //   coinInRawAmount
+        //     .div(BigNumber(10).pow(coinIn.decimals || 9))
+        //     .multipliedBy(coinInPrice)
+        //     .lt(2)
+        // ) {
+        //   throw new Error("Input should be more than 2$");
+        // }
 
         if (advancedPriceStrategyOpen && !minPrice) {
           throw new Error("Please enter min price");

@@ -9,6 +9,7 @@ type PriceOutput = {
 const API_URL = "https://aftermath.finance/api/price-info/[%22coin_type%22]";
 
 export async function getPrice(type: string): Promise<number> {
+  return 0;
   try {
     if (type === "0x2::sui::SUI")
       type =
